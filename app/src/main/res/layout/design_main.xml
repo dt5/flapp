@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id = "@+id/designLayout"
+    tools:context="com.example.doranwalsten.flapp.MainDesign">
+
+    <android.support.design.widget.FloatingActionButton
+        android:id = "@+id/moveButton"
+        android:src="@drawable/ic_games_white_24dp"
+        app:backgroundTint = "@color/colorPrimaryDark"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:clickable="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+
+
+
+
+    <fragment android:name = "com.alduran.doranwalsten.flapp.ObjectPickingFragment"
+        android:id = "@+id/face"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:layout="@layout/rajawali_textureview_fragment"/>
+
+    <RelativeLayout
+        android:layout_width="60dp"
+        android:layout_height="315dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:background="@color/colorPrimary"
+        android:id="@+id/toolBar">
+
+        <Button
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:background="@drawable/ic_create_white_24dp"
+            android:id="@+id/free_draw"
+            android:layout_marginTop="30dp"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="left|center_vertical" />
+
+        <Button
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:background="@drawable/ic_pan_tool_white_24dp"
+            android:id="@+id/drag_drop"
+            android:layout_below="@id/free_draw"
+            android:layout_marginTop="50dp"
+            android:layout_centerHorizontal="true"
+            android:onClick="dragDropPressed"/>
+
+        <Button
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:background="@drawable/ic_timer_white_24dp"
+            android:id="@+id/history"
+            android:layout_below="@id/drag_drop"
+            android:layout_marginTop="60dp"
+            android:layout_centerHorizontal="true"/>
+    </RelativeLayout>
+
+
+    <ListView
+        android:layout_width="75dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/list"
+        android:layout_toLeftOf="@id/toolBar"
+        android:layout_marginTop = "125dp"/>
+
+    <fragment android:name = "layout.PlainBaseFragment"
+    android:id = "@+id/plainBase"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    tools:layout="@layout/fragment_plain_base"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id = "@+id/forwardButton"
+        android:src="@drawable/ic_forward_white_24dp"
+        app:backgroundTint = "@color/colorPrimary"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="75dp"
+        android:clickable="true"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id = "@+id/acceptButton"
+        android:src="@drawable/ic_done_white_24dp"
+        app:backgroundTint = "@color/colorPrimary"
+        android:layout_above="@id/forwardButton"
+        android:layout_alignParentRight="true"
+        android:clickable="true"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id = "@+id/quitButton"
+        android:src="@drawable/ic_clear_white_24dp"
+        app:backgroundTint = "@color/colorPrimaryDark"
+        android:layout_above = "@id/acceptButton"
+        android:layout_alignParentRight="true"
+        android:clickable="true"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+
+</RelativeLayout>
