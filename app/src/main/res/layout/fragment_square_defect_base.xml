@@ -2,20 +2,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="layout.RhomboidBaseFragment">
+    tools:context="layout.SquareDefectBaseFragment">
 
     <View
         android:layout_width="match_parent"
         android:layout_height="75dp"
         android:layout_alignParentBottom="true"
         android:background="@drawable/bottommenu"
-        android:id="@+id/rhomboidView" />
+        android:id="@+id/squareView" />
+
 
     <SeekBar
-        android:id="@+id/seekBar_1"
+        android:id="@+id/squareSeekBar_1"
         android:layout_width="100dp"
         android:layout_height="50dp"
-        android:progress="87"
+        android:progress="50"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:minHeight="3dp"
@@ -23,14 +24,14 @@
         android:progressDrawable="@drawable/custom_slider"
         android:thumb="@drawable/purple_scrubber_control"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
+        android:layout_marginLeft="200dp"
         android:layout_alignParentBottom="true"/>
 
     <SeekBar
-        android:id="@+id/seekBar_2"
+        android:id="@+id/squareSeekBar_2"
         android:layout_width="100dp"
         android:layout_height="50dp"
-        android:progress="0"
+        android:progress="50"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:minHeight="3dp"
@@ -38,52 +39,29 @@
         android:progressDrawable="@drawable/custom_slider"
         android:thumb = "@drawable/purple_scrubber_control"
         android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="200dp"
         android:layout_centerHorizontal="true" />
 
 
 
-    <SeekBar
-        android:id="@+id/seekBar_3"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        android:progress="67"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:minHeight="3dp"
-        android:maxHeight="3dp"
-        android:progressDrawable="@drawable/custom_slider"
-        android:thumb="@drawable/purple_scrubber_control"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Medium Text"
+        android:id="@+id/squareTextView1"
+        android:layout_above="@id/squareSeekBar_1"
+        android:layout_alignStart="@id/squareSeekBar_1" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Medium Text"
-        android:id="@+id/textView1"
-        android:layout_above="@+id/seekBar_1"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:id="@+id/squareTextView2"
+        android:layout_above="@id/squareSeekBar_2"
+        android:layout_alignStart="@id/squareSeekBar_2" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
-        android:id="@+id/textView2"
-        android:layout_above="@+id/seekBar_2"
-        android:layout_alignRight="@+id/seekBar_2"
-        android:layout_alignEnd="@+id/seekBar_2" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
-        android:id="@+id/textView3"
-        android:layout_above="@+id/seekBar_3"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
 </RelativeLayout>

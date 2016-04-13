@@ -20,6 +20,7 @@ import android.widget.RelativeLayout;
 
 import layout.PlainBaseFragment;
 import layout.RhomboidBaseFragment;
+import layout.SquareDefectBaseFragment;
 
 /**
  * Created by doranwalsten on 4/4/16.
@@ -45,6 +46,11 @@ public class MainDesign extends AppCompatActivity {
         //Setup the Rajawali Surface Fragment
         final FragmentManager manager = getSupportFragmentManager();
         curr_face = (ObjectPickingFragment) manager.findFragmentById(R.id.face);
+        //Setup the Plain Base Fragment
+        Fragment baseFrag = new PlainBaseFragment();
+        FragmentTransaction ft = manager.beginTransaction();
+        ft.replace(R.id.fragmentContainer, baseFrag);
+        ft.commit();
 
         //Setup the FloatingActionButton to handle turning on and off the rotation action of the
         //Object Picking Fragment
@@ -83,7 +89,7 @@ public class MainDesign extends AppCompatActivity {
 
                 Fragment fragment = new PlainBaseFragment();
                 FragmentTransaction ft = manager.beginTransaction();
-                ft.replace(R.id.plainBase,fragment);
+                ft.replace(R.id.fragmentContainer,fragment);
                 ft.commit();
             }
         });
@@ -96,11 +102,11 @@ public class MainDesign extends AppCompatActivity {
                 cancel.setVisibility(View.GONE);
                 Fragment fragment = new PlainBaseFragment();
                 FragmentTransaction ft = manager.beginTransaction();
-                ft.replace(R.id.plainBase,fragment);
+                ft.replace(R.id.fragmentContainer,fragment);
                 ft.commit();
 
                 //In addition, need to remove the current design
-                deleteRhomoboid();
+                deleteFlap();
             }
         });
         //Setup the usual selection stuff (Table View)
@@ -118,24 +124,40 @@ public class MainDesign extends AppCompatActivity {
                 adding = true;
                 open = false;
 
-                //NOW! Need to initialize the specific fragment and flap for design
-                RhomboidFlap new_flap = new RhomboidFlap(getBaseContext());
-
                 RelativeLayout myLayout = (RelativeLayout) findViewById(R.id.designLayout);
                 RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT );
                 params.addRule(RelativeLayout.CENTER_HORIZONTAL,RelativeLayout.TRUE);
                 params.addRule(RelativeLayout.CENTER_VERTICAL,RelativeLayout.TRUE);
-                new_flap.setLayoutParams(params);
-                new_flap.getLayoutParams().height = 600;
-                new_flap.getLayoutParams().width = 600;
-                myLayout.addView(new_flap);
+                //NOW! Need to initialize the specific fragment and flap for design
+                if (position == 0) {
+                    RhomboidFlap new_flap = new RhomboidFlap(getBaseContext());
+                    //Need to initiate the new Fragment
+                    Fragment fragment = new RhomboidBaseFragment();
+                    FragmentTransaction ft = manager.beginTransaction();
+                    ft.replace(R.id.fragmentContainer, fragment);
+                    ft.commit();
+                    //Need to make a new Flap interface so that way we can save space!!!!
+                    new_flap.setLayoutParams(params);
+                    new_flap.getLayoutParams().height = 600;
+                    new_flap.getLayoutParams().width = 600;
+                    myLayout.addView(new_flap);
+
+                } else if (position == 1) {
+                    SquareDefect new_flap = new SquareDefect(getBaseContext());
+                    //Need to initiate the new Fragment
+                    Fragment fragment = new SquareDefectBaseFragment();
+                    FragmentTransaction ft = manager.beginTransaction();
+                    ft.replace(R.id.fragmentContainer, fragment);
+                    ft.commit();
+
+                    new_flap.setLayoutParams(params);
+                    new_flap.getLayoutParams().height = 600;
+                    new_flap.getLayoutParams().width = 600;
+                    myLayout.addView(new_flap);
+                }
                 drag_options.setVisibility(View.GONE);
 
-                //Need to initiate the new Fragment
-                Fragment fragment = new RhomboidBaseFragment();
-                FragmentTransaction ft = manager.beginTransaction();
-                ft.replace(R.id.plainBase,fragment);
-                ft.commit();
+
 
                 //Need to make the design button options visible
                 FloatingActionButton forward = (FloatingActionButton) findViewById(R.id.forwardButton);
@@ -151,12 +173,12 @@ public class MainDesign extends AppCompatActivity {
     }
 
     //Will need to modify such that we can pass a specific flap on the screent to this method
-    private void deleteRhomoboid() {
+    private void deleteFlap() {
         RelativeLayout parentLayout = (RelativeLayout) findViewById(R.id.designLayout);
         int count = parentLayout.getChildCount(); //Number of children
         for (int i = 0; i < count; i++) {
             View v = parentLayout.getChildAt(i);
-            if (v instanceof RhomboidFlap) {
+            if (v instanceof RhomboidFlap || v instanceof SquareDefect) {
                 parentLayout.removeView(v);
             }
         }

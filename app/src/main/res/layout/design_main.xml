@@ -17,10 +17,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
-
-
-
-
     <fragment android:name = "com.alduran.doranwalsten.flapp.ObjectPickingFragment"
         android:id = "@+id/face"
         android:layout_width="wrap_content"
@@ -72,11 +68,20 @@
         android:layout_toLeftOf="@id/toolBar"
         android:layout_marginTop = "125dp"/>
 
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id = "@+id/fragmentContainer">
+    </RelativeLayout>
+
+    <!--
     <fragment android:name = "layout.PlainBaseFragment"
     android:id = "@+id/plainBase"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     tools:layout="@layout/fragment_plain_base"/>
+    -->
 
     <android.support.design.widget.FloatingActionButton
         android:id = "@+id/forwardButton"

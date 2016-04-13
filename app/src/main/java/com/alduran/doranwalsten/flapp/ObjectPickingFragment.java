@@ -51,11 +51,19 @@ public class ObjectPickingFragment extends BaseFragment implements
                         }
 
                     case DragEvent.ACTION_DROP:
-                        RhomboidFlap curr = (RhomboidFlap) event.getLocalState();
-                        View draggedImage = (View) event.getLocalState();
-                        draggedImage.setX(event.getX() - draggedImage.getWidth() / 2 - curr.getDisplacement()[0]);
-                        draggedImage.setY(event.getY() - draggedImage.getHeight() / 2 - curr.getDisplacement()[1]);
-                        draggedImage.setVisibility(View.VISIBLE);
+
+                        //Temporary fix, need to make general interface for all flap object
+                        if (event.getLocalState() instanceof  RhomboidFlap) {
+                            RhomboidFlap curr = (RhomboidFlap) event.getLocalState();
+                            curr.setX(event.getX() - curr.getWidth() / 2 - curr.getDisplacement()[0]);
+                            curr.setY(event.getY() - curr.getHeight() / 2 - curr.getDisplacement()[1]);
+                            curr.setVisibility(View.VISIBLE);
+                        } else { //Just Square Defect for now
+                            SquareDefect curr = (SquareDefect) event.getLocalState();
+                            curr.setX(event.getX() - curr.getWidth() / 2 - curr.getDisplacement()[0]);
+                            curr.setY(event.getY() - curr.getHeight() / 2 - curr.getDisplacement()[1]);
+                            curr.setVisibility(View.VISIBLE);
+                        }
 
 
                         //Try dropping a new image at the point

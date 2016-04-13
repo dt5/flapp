@@ -9,6 +9,6 @@
         android:layout_height="75dp"
         android:layout_alignParentBottom="true"
         android:background="@drawable/bottommenu"
-        android:id="@+id/view" />
+        android:id="@+id/plainView" />
 
 </RelativeLayout>
