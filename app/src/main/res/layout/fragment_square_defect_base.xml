@@ -11,7 +11,6 @@
         android:background="@drawable/bottommenu"
         android:id="@+id/squareView" />
 
-
     <SeekBar
         android:id="@+id/squareSeekBar_1"
         android:layout_width="100dp"
@@ -23,9 +22,19 @@
         android:maxHeight="3dp"
         android:progressDrawable="@drawable/custom_slider"
         android:thumb="@drawable/purple_scrubber_control"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="200dp"
+        android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"/>
+
+    <Button
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@id/squareSeekBar_1"
+        android:layout_marginRight="25dp"
+        android:background="@drawable/lockbutton"
+        android:id = "@+id/lockButton" />
+
+
 
     <SeekBar
         android:id="@+id/squareSeekBar_2"

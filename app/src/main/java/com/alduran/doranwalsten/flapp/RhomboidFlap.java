@@ -22,7 +22,7 @@ import java.util.ArrayList;
  * Created by doranwalsten on 1/23/16.
  * This class creates a rhombioid flap shape to display in the app
  */
-public class RhomboidFlap extends View {
+public class RhomboidFlap extends View implements Flap, RotationGestureDetector.OnRotationGestureListener {
 
     //Default Constructor
     private double alpha; //Inclination angle
@@ -35,6 +35,9 @@ public class RhomboidFlap extends View {
     private ScaleGestureDetector mScaleDetector;
     private GestureDetectorCompat mDetector;
     private float mScaleFactor = 1.f;
+    private int up = 1; //Switch between +1 for up, -1 for down
+    private RotationGestureDetector mRotationDetector;
+    private double rot = 0.0; //Store the current global rotation
 
     public RhomboidFlap(Context context) {
         super(context);
@@ -46,6 +49,7 @@ public class RhomboidFlap extends View {
         this.center = new Point(300,300);
         this.mScaleDetector = new ScaleGestureDetector(context, new ScaleListener());
         this.mDetector = new GestureDetectorCompat(context,new MoveListener(this));
+        this.mRotationDetector = new RotationGestureDetector(this);
 
     }
 
@@ -58,6 +62,7 @@ public class RhomboidFlap extends View {
     public void setHeight(double ratio) {
         this.height = (int) Math.floor(this.width*ratio);
     }
+    public void switchUp() {this.up *= -1 ;}
 
     public void setTouchpoint(float x, float y) {
         touchpoint[0] = x;
@@ -88,8 +93,7 @@ public class RhomboidFlap extends View {
     public void onDraw(Canvas canvas) {
         //Get the points
         canvas.save();
-        canvas.scale(mScaleFactor, mScaleFactor,300,300);
-        Log.i("Scaling", String.format("Current Scale Value: %.2f", mScaleFactor));
+        canvas.scale(mScaleFactor, mScaleFactor, 300, 300);
         ArrayList<Point> ref = calculatePoints();
         //Set the style
         Paint paint = new Paint();
@@ -120,6 +124,7 @@ public class RhomboidFlap extends View {
         // Let the ScaleGestureDetector inspect all events.
         mScaleDetector.onTouchEvent(ev);
         mDetector.onTouchEvent(ev);
+        mRotationDetector.onTouchEvent(ev);
         return true;
     }
 
@@ -171,12 +176,14 @@ public class RhomboidFlap extends View {
     }
     //
 
-    private ArrayList<Point> calculatePoints() {
+    public ArrayList<Point> calculatePoints() {
         //List of Points
         ArrayList<Point> reference = new ArrayList<Point>();
         //Important values
         double l = Math.sqrt(Math.pow(this.height / 2, 2) + Math.pow(this.width / 2, 2));
-        double gamma = (this.alpha + this.beta) - Math.PI/2;
+        //double gamma = (this.alpha + this.beta) - Math.PI/2;
+        double gamma = -up*this.beta + -up * this.alpha + this.rot; //Adjusted angle for the pedicle
+        double theta = Math.atan2(this.height,this.width);
 
         //Find the points
         Point pt1 = new Point();
@@ -186,33 +193,39 @@ public class RhomboidFlap extends View {
         int x = 0;
         int y = 0;
         Point pt2 = new Point();
-        x = (int) (pt1.x + l * Math.cos(this.alpha));
-        y = (int) (pt1.y + l * Math.sin(this.alpha));
+        x = (int) (pt1.x + l * Math.cos((this.rot - up * this.alpha)));
+        y = (int) (pt1.y - l * Math.sin((this.rot- up * this.alpha)));
         pt2.set(x, y);
         reference.add(pt2);
 
         Point pt3 = new Point();
-        x = (int) (pt2.x + l * Math.sin(gamma));
-        y = (int) (pt2.y - l * Math.cos(gamma));
+        //x = (int) (pt2.x + l * Math.sin(gamma));
+        //y = (int) (pt2.y - up * l * Math.cos(gamma));
+        x = (int) (pt2.x - l * Math.cos(gamma));
+        y = (int) (pt2.y + l * Math.sin(gamma));
         pt3.set(x, y);
         reference.add(pt3);
 
         //Now, the body of the Rhombus
         Point pt4 = new Point();
-        x = pt1.x - this.width / 2;
-        y = pt1.y + this.height / 2;
+        //x = pt1.x - this.width / 2;
+        //y = pt1.y + this.height / 2;
+        x = (int) (pt1.x - l*Math.cos(theta - this.rot));
+        y = (int) (pt1.y - l*Math.sin(theta - this.rot));
         pt4.set(x, y);
         reference.add(pt4);
 
         Point pt5 = new Point();
-        x = pt1.x - this.width;
-        y = pt1.y;
+        x = (int) (pt1.x - this.width*Math.cos(this.rot));
+        y = (int) (pt1.y + this.width*Math.sin(this.rot));
         pt5.set(x, y);
         reference.add(pt5);
 
         Point pt6 = new Point();
-        x = pt1.x - this.width / 2;
-        y = pt1.y - this.height / 2;
+        //x = pt1.x - this.width / 2;
+        //y = pt1.y - this.height / 2;
+        x = (int) (pt1.x - l*Math.cos(theta + this.rot));
+        y = (int) (pt1.y + l*Math.sin(theta + this.rot));
         pt6.set(x, y);
         reference.add(pt6);
 
@@ -229,5 +242,9 @@ public class RhomboidFlap extends View {
         return viewSeen;
     }
 
-
+    public void OnRotation(RotationGestureDetector rotationDetector) {
+        //Use this method to set the "rotation angle" of the rhomboid flap
+        this.rot = rotationDetector.getAngle();
+        Log.i("Test",String.format("Angle Rotated: %.2f",rotationDetector.getAngle()));
+    }
 }

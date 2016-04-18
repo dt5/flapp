@@ -21,10 +21,10 @@ import java.util.ArrayList;
  * will be working with for an advancement flap
  */
 
-public class SquareDefect extends View { //Still a View
+public class SquareDefect extends View implements Flap { //Still a View
 
-    private int x; //width
-    private int y; //height
+    private int w; //width
+    private int h; //height
     private Point center;
     private float[] touchpoint = new float[2];
     private float[] displacement = {0,0};
@@ -32,18 +32,22 @@ public class SquareDefect extends View { //Still a View
 
     public SquareDefect(Context context) {
         super(context);
-        x = 200;
-        y = 200;
+        w = 200;
+        h = 200;
         this.center = new Point(300,300);
         mDetector = new GestureDetectorCompat(context,new MoveListener(this));
+
     }
 
-    public void setWidth(int w) {
-        this.x = w;
+    public int getW() { return this.w; }
+    public int getH() { return this.h; }
+    public void setW(int w) {
+        this.w = w;
     }
-    public void setHeight(int h) {
-        this.y = h;
+    public void setH(int h) {
+        this.h = h;
     }
+
 
     public void setTouchpoint(float x, float y) {
         touchpoint[0] = x;
@@ -85,18 +89,17 @@ public class SquareDefect extends View { //Still a View
         path.close();
 
         canvas.drawPath(path, paint);
-
         canvas.restore();
 
     }
 
-    private ArrayList<Point> calculatePoints() {
+    public ArrayList<Point> calculatePoints() {
         //List of Points
         ArrayList<Point> reference = new ArrayList<Point>();
-        Point pt1 = new Point(this.center.x - this.x/2, this.center.y+this.y/2);
-        Point pt2 = new Point(this.center.x + this.x/2, this.center.y+this.y/2);
-        Point pt3 = new Point(this.center.x + this.x/2, this.center.y-this.y/2);
-        Point pt4 = new Point(this.center.x - this.x/2, this.center.y-this.y/2);
+        Point pt1 = new Point(this.center.x - this.w/2, this.center.y+this.h/2);
+        Point pt2 = new Point(this.center.x + this.w/2, this.center.y+this.h/2);
+        Point pt3 = new Point(this.center.x + this.w/2, this.center.y-this.h/2);
+        Point pt4 = new Point(this.center.x - this.w/2, this.center.y-this.h/2);
         reference.add(pt1);
         reference.add(pt2);
         reference.add(pt3);
@@ -113,7 +116,9 @@ public class SquareDefect extends View { //Still a View
 
 
     //This class should hopefully detect a long press in order to run
-    private class MoveListener extends GestureDetector.SimpleOnGestureListener {
+    //We want to keep this a private class in case we need special listeners for different types of
+    //apps
+    private class MoveListener extends GestureDetector.SimpleOnGestureListener  {
 
         View parent;
         public MoveListener(View v) {

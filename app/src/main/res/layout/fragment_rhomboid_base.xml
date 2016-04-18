@@ -11,6 +11,29 @@
         android:background="@drawable/bottommenu"
         android:id="@+id/rhomboidView" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="UP"
+        android:textColor = "@color/white"
+        android:background="@color/colorPrimary"
+        android:id="@+id/upButton"
+        android:enabled="false"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="40dp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="DOWN"
+        android:id="@+id/downButton"
+        android:background="@color/gray"
+        android:enabled = "true"
+        android:onClick="downButtonPressed"
+        android:layout_alignTop="@id/upButton"
+        android:layout_toEndOf="@id/upButton" />
+
     <SeekBar
         android:id="@+id/seekBar_1"
         android:layout_width="100dp"
@@ -22,8 +45,7 @@
         android:maxHeight="3dp"
         android:progressDrawable="@drawable/custom_slider"
         android:thumb="@drawable/purple_scrubber_control"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
+        android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"/>
 
     <SeekBar
@@ -38,7 +60,8 @@
         android:progressDrawable="@drawable/custom_slider"
         android:thumb = "@drawable/purple_scrubber_control"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_toRightOf="@id/seekBar_1"
+        android:layout_marginLeft="75dp"/>
 
 
 
@@ -64,8 +87,7 @@
         android:text="Medium Text"
         android:id="@+id/textView1"
         android:layout_above="@+id/seekBar_1"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -74,8 +96,7 @@
         android:text="Medium Text"
         android:id="@+id/textView2"
         android:layout_above="@+id/seekBar_2"
-        android:layout_alignRight="@+id/seekBar_2"
-        android:layout_alignEnd="@+id/seekBar_2" />
+        android:layout_alignStart="@+id/seekBar_2" />
 
     <TextView
         android:layout_width="wrap_content"

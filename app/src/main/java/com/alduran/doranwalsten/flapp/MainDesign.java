@@ -31,6 +31,7 @@ public class MainDesign extends AppCompatActivity {
     private boolean open;//Whether the drag and drop menu is currently open
     private boolean adding; //Whether we are now adding a flap design
     ObjectPickingFragment curr_face; //This is our Rajawali object that we want to mess with
+    Flap curr_flap;//Have access to the current flap fragment in use
 
     Integer[] imageId = {
             R.drawable.rhomboid_logo,
@@ -106,7 +107,7 @@ public class MainDesign extends AppCompatActivity {
                 ft.commit();
 
                 //In addition, need to remove the current design
-                deleteFlap();
+                deleteFlap(curr_flap);
             }
         });
         //Setup the usual selection stuff (Table View)
@@ -129,32 +130,31 @@ public class MainDesign extends AppCompatActivity {
                 params.addRule(RelativeLayout.CENTER_HORIZONTAL,RelativeLayout.TRUE);
                 params.addRule(RelativeLayout.CENTER_VERTICAL,RelativeLayout.TRUE);
                 //NOW! Need to initialize the specific fragment and flap for design
-                if (position == 0) {
-                    RhomboidFlap new_flap = new RhomboidFlap(getBaseContext());
+                Flap new_flap;
+                Fragment fragment;
+                //Determine which Flap needs to be added
+                if (position == 0) { //Rhomboid Flap
+                    new_flap = new RhomboidFlap(getBaseContext());
                     //Need to initiate the new Fragment
-                    Fragment fragment = new RhomboidBaseFragment();
-                    FragmentTransaction ft = manager.beginTransaction();
-                    ft.replace(R.id.fragmentContainer, fragment);
-                    ft.commit();
-                    //Need to make a new Flap interface so that way we can save space!!!!
-                    new_flap.setLayoutParams(params);
-                    new_flap.getLayoutParams().height = 600;
-                    new_flap.getLayoutParams().width = 600;
-                    myLayout.addView(new_flap);
-
-                } else if (position == 1) {
-                    SquareDefect new_flap = new SquareDefect(getBaseContext());
+                    fragment = new RhomboidBaseFragment();
+                } else if (position == 1) { //Advancement Flap
+                    new_flap = new SquareDefect(getBaseContext());
                     //Need to initiate the new Fragment
-                    Fragment fragment = new SquareDefectBaseFragment();
-                    FragmentTransaction ft = manager.beginTransaction();
-                    ft.replace(R.id.fragmentContainer, fragment);
-                    ft.commit();
-
-                    new_flap.setLayoutParams(params);
-                    new_flap.getLayoutParams().height = 600;
-                    new_flap.getLayoutParams().width = 600;
-                    myLayout.addView(new_flap);
+                    fragment = new SquareDefectBaseFragment();
+                } else {
+                    new_flap = null;
+                    fragment = null;
                 }
+                FragmentTransaction ft = manager.beginTransaction();
+                ft.replace(R.id.fragmentContainer, fragment);
+                ft.commit();
+                curr_flap = new_flap;
+                    //Need to make a new Flap interface so that way we can save space!!!!
+                View new_view = (View) new_flap;
+                new_view.setLayoutParams(params);
+                new_view.getLayoutParams().height = 600;
+                new_view.getLayoutParams().width = 600;
+                myLayout.addView(new_view);
                 drag_options.setVisibility(View.GONE);
 
 
@@ -173,15 +173,9 @@ public class MainDesign extends AppCompatActivity {
     }
 
     //Will need to modify such that we can pass a specific flap on the screent to this method
-    private void deleteFlap() {
+    private void deleteFlap(Flap flap) {
         RelativeLayout parentLayout = (RelativeLayout) findViewById(R.id.designLayout);
-        int count = parentLayout.getChildCount(); //Number of children
-        for (int i = 0; i < count; i++) {
-            View v = parentLayout.getChildAt(i);
-            if (v instanceof RhomboidFlap || v instanceof SquareDefect) {
-                parentLayout.removeView(v);
-            }
-        }
+        parentLayout.removeView((View) flap);
     }
     private class FlappList extends ArrayAdapter<Integer> {
 
