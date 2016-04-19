@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.GestureDetectorCompat;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -153,10 +154,15 @@ public class RhomboidFlap extends View implements Flap, RotationGestureDetector.
 
         @Override
         public boolean onSingleTapUp(MotionEvent ev) {
-            RelativeLayout parent_layout = (RelativeLayout) parent.getParent();
-            parent_layout.findViewById(R.id.forwardButton).setVisibility(View.VISIBLE);
-            parent_layout.findViewById(R.id.acceptButton).setVisibility(View.VISIBLE);
-            parent_layout.findViewById(R.id.quitButton).setVisibility(View.VISIBLE);
+
+            final RelativeLayout parent_layout = (RelativeLayout) parent.getParent();
+            final FloatingActionButton forward = (FloatingActionButton) parent_layout.findViewById(R.id.forwardButton);
+            final FloatingActionButton edit = (FloatingActionButton) parent_layout.findViewById(R.id.editFlapButton);
+            final FloatingActionButton cancel = (FloatingActionButton) parent_layout.findViewById(R.id.quitButton);
+            forward.setVisibility(View.VISIBLE);
+            edit.setVisibility(View.VISIBLE);
+            cancel.setVisibility(View.VISIBLE);
+
             return true;
         }
 
@@ -172,6 +178,7 @@ public class RhomboidFlap extends View implements Flap, RotationGestureDetector.
             shadowBuilder.setDisplacement(getDisplacement()[0], getDisplacement()[1]);
             startDrag(clipData, shadowBuilder, parent, 0);
             setVisibility(View.GONE);
+
         }
     }
     //

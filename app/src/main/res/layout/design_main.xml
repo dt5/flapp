@@ -107,11 +107,23 @@
         android:layout_height="wrap_content"/>
 
     <android.support.design.widget.FloatingActionButton
+        android:id = "@+id/editFlapButton"
+        android:src="@drawable/ic_create_white_24dp"
+        app:backgroundTint = "@color/colorPrimary"
+        android:layout_above="@id/forwardButton"
+        android:layout_alignParentRight="true"
+        android:clickable="true"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <android.support.design.widget.FloatingActionButton
         android:id = "@+id/quitButton"
         android:src="@drawable/ic_clear_white_24dp"
         app:backgroundTint = "@color/colorPrimaryDark"
-        android:layout_above = "@id/acceptButton"
+        android:layout_above = "@id/forwardButton"
         android:layout_alignParentRight="true"
+        android:layout_marginBottom="60dp"
         android:clickable="true"
         android:visibility="gone"
         android:layout_width="wrap_content"

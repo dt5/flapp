@@ -13,9 +13,6 @@ import org.rajawali3d.Object3D;
 import org.rajawali3d.lights.DirectionalLight;
 import org.rajawali3d.loader.LoaderOBJ;
 import org.rajawali3d.loader.ParsingException;
-import org.rajawali3d.materials.Material;
-import org.rajawali3d.materials.textures.ATexture;
-import org.rajawali3d.materials.textures.Texture;
 import org.rajawali3d.math.vector.Vector3;
 import org.rajawali3d.primitives.Sphere;
 import org.rajawali3d.renderer.RajawaliRenderer;
@@ -68,18 +65,19 @@ public class Renderer extends RajawaliRenderer implements IRajawaliSurfaceRender
         //getCurrentScene().addLight(directionalLight1);
         getCurrentScene().addLight(directionalLight1);
 
-        LoaderOBJ objParser = new LoaderOBJ(mContext.getResources(), mTextureManager, R.raw.patrick_obj);
+        LoaderOBJ objParser = new LoaderOBJ(mContext.getResources(), mTextureManager, R.raw.test_obj);
 
 
         try {
             objParser.parse();
         }catch (ParsingException e) {
-
         }
 
         Object3D mObject = objParser.getParsedObject();
         //mObject.setColor(Color.TRANSPARENT);
-        mObject.setScale(10.f);//Patrick's model is kind of small, I think
+        mObject.setScale(1.f);//Patrick's model is kind of small, I think 10 needed
+
+        /* Only needed for patrick's model
         Material material = new Material();
         Texture texture = new Texture("Patrick",R.drawable.patrick_texture);
         try {
@@ -89,6 +87,7 @@ public class Renderer extends RajawaliRenderer implements IRajawaliSurfaceRender
         }
 
         mObject.setMaterial(material);
+        */
         getCurrentScene().addChild(mObject);
 
         //Sample code that this was based on - HOLD ON AS A REFERENCE

@@ -14,13 +14,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
+import layout.AdvancementBaseFragment;
 import layout.PlainBaseFragment;
 import layout.RhomboidBaseFragment;
-import layout.SquareDefectBaseFragment;
 
 /**
  * Created by doranwalsten on 4/4/16.
@@ -68,13 +69,16 @@ public class MainDesign extends AppCompatActivity {
         });
         final FloatingActionButton forward = (FloatingActionButton) findViewById(R.id.forwardButton);
         final FloatingActionButton accept = (FloatingActionButton) findViewById(R.id.acceptButton);
+        final FloatingActionButton edit = (FloatingActionButton) findViewById(R.id.editFlapButton);
         final FloatingActionButton cancel = (FloatingActionButton) findViewById(R.id.quitButton);
+        final Button ddb = (Button) findViewById(R.id.drag_drop);
 
         forward.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent next = new Intent(MainDesign.this,MainFeedbackActivity.class);
                 forward.setVisibility(View.GONE);
                 accept.setVisibility(View.GONE);
+                edit.setVisibility(View.GONE);
                 cancel.setVisibility(View.GONE);
                 startActivity(next);
             }
@@ -86,28 +90,48 @@ public class MainDesign extends AppCompatActivity {
             public void onClick(View v) {
                 forward.setVisibility(View.GONE);
                 accept.setVisibility(View.GONE);
+                edit.setVisibility(View.GONE);
                 cancel.setVisibility(View.GONE);
 
                 Fragment fragment = new PlainBaseFragment();
                 FragmentTransaction ft = manager.beginTransaction();
-                ft.replace(R.id.fragmentContainer,fragment);
+                ft.replace(R.id.fragmentContainer, fragment);
                 ft.commit();
             }
         });
 
+        edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (curr_flap instanceof RhomboidFlap) {
+                    RhomboidBaseFragment fragment = new RhomboidBaseFragment();
+                    FragmentTransaction ft = manager.beginTransaction();
+                    ft.replace(R.id.fragmentContainer, fragment);
+                    ft.commit();
+                } else if (curr_flap instanceof AdvancementFlap) {
+                    AdvancementBaseFragment fragment = new AdvancementBaseFragment();
+                    FragmentTransaction ft = manager.beginTransaction();
+                    ft.replace(R.id.fragmentContainer, fragment);
+                    ft.commit();
+                }
+            }
+        });
 
         cancel.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 forward.setVisibility(View.GONE);
                 accept.setVisibility(View.GONE);
+                edit.setVisibility(View.GONE);
                 cancel.setVisibility(View.GONE);
                 Fragment fragment = new PlainBaseFragment();
                 FragmentTransaction ft = manager.beginTransaction();
-                ft.replace(R.id.fragmentContainer,fragment);
+                ft.replace(R.id.fragmentContainer, fragment);
                 ft.commit();
 
                 //In addition, need to remove the current design
                 deleteFlap(curr_flap);
+                ddb.setEnabled(true);//Allowed to use that button again
+
             }
         });
         //Setup the usual selection stuff (Table View)
@@ -132,15 +156,22 @@ public class MainDesign extends AppCompatActivity {
                 //NOW! Need to initialize the specific fragment and flap for design
                 Flap new_flap;
                 Fragment fragment;
+                FloatingActionButton forward = (FloatingActionButton) findViewById(R.id.forwardButton);
+                FloatingActionButton accept = (FloatingActionButton) findViewById(R.id.acceptButton);
+                FloatingActionButton cancel = (FloatingActionButton) findViewById(R.id.quitButton);
                 //Determine which Flap needs to be added
                 if (position == 0) { //Rhomboid Flap
                     new_flap = new RhomboidFlap(getBaseContext());
                     //Need to initiate the new Fragment
                     fragment = new RhomboidBaseFragment();
+                    forward.setVisibility(View.VISIBLE);
+                    accept.setVisibility(View.VISIBLE);
+                    cancel.setVisibility(View.VISIBLE);
                 } else if (position == 1) { //Advancement Flap
-                    new_flap = new SquareDefect(getBaseContext());
+                    new_flap = new AdvancementFlap(getBaseContext());
                     //Need to initiate the new Fragment
-                    fragment = new SquareDefectBaseFragment();
+                    fragment = new AdvancementBaseFragment();
+                    //Only want accept and cancel visible initially
                 } else {
                     new_flap = null;
                     fragment = null;
@@ -152,28 +183,24 @@ public class MainDesign extends AppCompatActivity {
                     //Need to make a new Flap interface so that way we can save space!!!!
                 View new_view = (View) new_flap;
                 new_view.setLayoutParams(params);
-                new_view.getLayoutParams().height = 600;
-                new_view.getLayoutParams().width = 600;
+                //Apparently need a really large region
+                new_view.getLayoutParams().height = 1000;
+                new_view.getLayoutParams().width = 1000;
                 myLayout.addView(new_view);
                 drag_options.setVisibility(View.GONE);
 
 
 
                 //Need to make the design button options visible
-                FloatingActionButton forward = (FloatingActionButton) findViewById(R.id.forwardButton);
-                forward.setVisibility(View.VISIBLE);
-                FloatingActionButton accept = (FloatingActionButton) findViewById(R.id.acceptButton);
-                accept.setVisibility(View.VISIBLE);
-                FloatingActionButton cancel = (FloatingActionButton) findViewById(R.id.quitButton);
-                cancel.setVisibility(View.VISIBLE);
 
-
+                Button ddb = (Button) findViewById(R.id.drag_drop);
+                ddb.setEnabled(false);//Need to disable the button to prevent other flaps from being added
             }
         });
     }
 
     //Will need to modify such that we can pass a specific flap on the screent to this method
-    private void deleteFlap(Flap flap) {
+    public void deleteFlap(Flap flap) {
         RelativeLayout parentLayout = (RelativeLayout) findViewById(R.id.designLayout);
         parentLayout.removeView((View) flap);
     }

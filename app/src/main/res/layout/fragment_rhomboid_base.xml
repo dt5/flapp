@@ -30,7 +30,6 @@
         android:id="@+id/downButton"
         android:background="@color/gray"
         android:enabled = "true"
-        android:onClick="downButtonPressed"
         android:layout_alignTop="@id/upButton"
         android:layout_toEndOf="@id/upButton" />
 

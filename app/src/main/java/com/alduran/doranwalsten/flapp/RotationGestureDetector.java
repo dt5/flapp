@@ -7,6 +7,7 @@ public class RotationGestureDetector {
     private float fX, fY, sX, sY;
     private int ptrID1, ptrID2;
     private double mAngle;
+    private double last_valid = 0.0;
 
     private OnRotationGestureListener mListener;
 
@@ -40,7 +41,7 @@ public class RotationGestureDetector {
                      nfX = event.getX(event.findPointerIndex(ptrID2));
                      nfY = event.getY(event.findPointerIndex(ptrID2));
 
-                     mAngle = angleBetweenLines(fX, fY, sX, sY, nfX, nfY, nsX, nsY);
+                     mAngle = last_valid + angleBetweenLines(fX, fY, sX, sY, nfX, nfY, nsX, nsY);
 
                      if (mListener != null) {
                         mListener.OnRotation(this);
@@ -49,13 +50,16 @@ public class RotationGestureDetector {
                  break;
             case MotionEvent.ACTION_UP:
                  ptrID1 = INVALID_POINTER_ID;
+                last_valid = mAngle;
                  break;
             case MotionEvent.ACTION_POINTER_UP:
                  ptrID2 = INVALID_POINTER_ID;
+                last_valid = mAngle;
                  break;
             case MotionEvent.ACTION_CANCEL:
                  ptrID1 = INVALID_POINTER_ID;
                  ptrID2 = INVALID_POINTER_ID;
+                last_valid = mAngle;
                  break;
         }
         return true;

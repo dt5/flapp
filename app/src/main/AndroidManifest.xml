@@ -15,9 +15,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".viewFaceActivity"></activity>
-        <activity android:name=".MainDesign"></activity>
-        <activity android:name=".RhomboidActivity"></activity>
+        <activity android:name=".MainDesign"
+            android:screenOrientation="portrait">
+        </activity>
         <activity android:name=".MainFeedbackActivity"></activity>
 
     </application>
