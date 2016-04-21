@@ -47,7 +47,7 @@ public class RhomboidFlap extends View implements Flap, RotationGestureDetector.
         this.beta = Math.PI/3;
         this.width = 120;
         this.height = (int) Math.floor(this.width*Math.sqrt(3));
-        this.center = new Point(300,300);
+        this.center = new Point(500,500);
         this.mScaleDetector = new ScaleGestureDetector(context, new ScaleListener());
         this.mDetector = new GestureDetectorCompat(context,new MoveListener(this));
         this.mRotationDetector = new RotationGestureDetector(this);
@@ -68,8 +68,8 @@ public class RhomboidFlap extends View implements Flap, RotationGestureDetector.
     public void setTouchpoint(float x, float y) {
         touchpoint[0] = x;
         touchpoint[1] = y;
-        displacement[0] = x - this.getX() - 300;
-        displacement[1] = y - this.getY() - 450;
+        displacement[0] = x - this.getX() - 500;
+        displacement[1] = y - this.getY() - 700;
     }
 
     public float[] getTouchpoint() {
@@ -94,7 +94,7 @@ public class RhomboidFlap extends View implements Flap, RotationGestureDetector.
     public void onDraw(Canvas canvas) {
         //Get the points
         canvas.save();
-        canvas.scale(mScaleFactor, mScaleFactor, 300, 300);
+        canvas.scale(mScaleFactor, mScaleFactor, 500, 500);
         ArrayList<Point> ref = calculatePoints();
         //Set the style
         Paint paint = new Paint();

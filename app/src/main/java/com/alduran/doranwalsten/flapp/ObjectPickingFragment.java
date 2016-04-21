@@ -5,6 +5,7 @@ import android.content.ClipDescription;
 import android.content.Context;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Display;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
@@ -18,6 +19,9 @@ import org.rajawali3d.Object3D;
 import org.rajawali3d.lights.DirectionalLight;
 import org.rajawali3d.loader.LoaderOBJ;
 import org.rajawali3d.loader.ParsingException;
+import org.rajawali3d.materials.Material;
+import org.rajawali3d.materials.textures.ATexture;
+import org.rajawali3d.materials.textures.Texture;
 import org.rajawali3d.util.OnObjectPickedListener;
 
 public class ObjectPickingFragment extends BaseFragment implements
@@ -126,7 +130,7 @@ public class ObjectPickingFragment extends BaseFragment implements
             directionalLight.setPower(2);
             getCurrentScene().addLight(directionalLight);
 
-            LoaderOBJ objParser = new LoaderOBJ(mContext.getResources(), mTextureManager, R.raw.test_obj);
+            LoaderOBJ objParser = new LoaderOBJ(mContext.getResources(), mTextureManager, R.raw.patrick_obj);
             try {
                 objParser.parse();
             }catch (ParsingException e) {
@@ -134,8 +138,8 @@ public class ObjectPickingFragment extends BaseFragment implements
             }
 
             mObject = objParser.getParsedObject();
-            mObject.setScale(.01f); //Need to make the test small (0.01) Patrick large (5)
-            /* Only need to work with Materials for Patrick
+            mObject.setScale(5.f); //Need to make the test small (0.01) Patrick large (5)
+            // Only need to work with Materials for Patrick
             Material material = new Material();
             Texture texture = new Texture("Patrick",R.drawable.patrick_texture);
             try {
@@ -145,7 +149,6 @@ public class ObjectPickingFragment extends BaseFragment implements
             }
             material.setColor(0);
             mObject.setMaterial(material);
-            */
             getCurrentScene().addChild(mObject);
 
             myCamera = new ArcballCamera(this.context, ((Activity) this.context).findViewById(R.id.rajwali_surface));
