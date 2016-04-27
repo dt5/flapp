@@ -80,6 +80,40 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
+    <android.support.design.widget.FloatingActionButton
+        android:id = "@+id/upArrowButton"
+        android:src="@drawable/ic_up_white_24dp"
+        app:backgroundTint = "@color/colorPrimaryDark"
+        android:clickable="true"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
+    <android.support.design.widget.FloatingActionButton
+        android:id = "@+id/leftArrowButton"
+        android:src="@drawable/ic_left_white_24dp"
+        app:backgroundTint = "@color/colorPrimaryDark"
+        android:clickable="true"
+        android:visibility = "gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id = "@+id/rightArrowButton"
+        android:src="@drawable/ic_right_white_24dp"
+        app:backgroundTint = "@color/colorPrimaryDark"
+        android:clickable="true"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id = "@+id/downArrowButton"
+        android:src="@drawable/ic_down_white_24dp"
+        app:backgroundTint = "@color/colorPrimaryDark"
+        android:clickable="true"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
 </RelativeLayout>

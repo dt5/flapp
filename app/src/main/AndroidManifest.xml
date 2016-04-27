@@ -18,7 +18,9 @@
         <activity android:name=".MainDesign"
             android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".MainFeedbackActivity"></activity>
+        <activity android:name=".MainFeedbackActivity"
+            android:screenOrientation="portrait">
+        </activity>
 
     </application>
 

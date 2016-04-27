@@ -37,7 +37,6 @@ public class MainDesign extends AppCompatActivity {
     Integer[] imageId = {
             R.drawable.rhomboid_logo,
             R.drawable.advancement_logo,
-            R.drawable.linear_logo
     };
 
     @Override
@@ -80,6 +79,12 @@ public class MainDesign extends AppCompatActivity {
                 accept.setVisibility(View.GONE);
                 edit.setVisibility(View.GONE);
                 cancel.setVisibility(View.GONE);
+                ImageView feedback = (ImageView) findViewById(R.id.face_view);
+                if (curr_flap instanceof RhomboidFlap) {
+                    next.putExtra("image_res",R.drawable.rhomboid_feedback_bad);
+                } else if (curr_flap instanceof AdvancementFlap) {
+                    next.putExtra("image_res",R.drawable.adv_feedback_bad);
+                }
                 startActivity(next);
             }
 
@@ -92,6 +97,9 @@ public class MainDesign extends AppCompatActivity {
                 accept.setVisibility(View.GONE);
                 edit.setVisibility(View.GONE);
                 cancel.setVisibility(View.GONE);
+
+                curr_flap.setActivated(false);
+                ((View) curr_flap).invalidate();
 
                 Fragment fragment = new PlainBaseFragment();
                 FragmentTransaction ft = manager.beginTransaction();
@@ -114,6 +122,9 @@ public class MainDesign extends AppCompatActivity {
                     ft.replace(R.id.fragmentContainer, fragment);
                     ft.commit();
                 }
+
+                edit.setVisibility(View.GONE);
+                accept.setVisibility(View.VISIBLE);
             }
         });
 
@@ -176,9 +187,6 @@ public class MainDesign extends AppCompatActivity {
                     new_flap = null;
                     fragment = null;
                 }
-                FragmentTransaction ft = manager.beginTransaction();
-                ft.replace(R.id.fragmentContainer, fragment);
-                ft.commit();
                 curr_flap = new_flap;
                     //Need to make a new Flap interface so that way we can save space!!!!
                 View new_view = (View) new_flap;
@@ -187,6 +195,11 @@ public class MainDesign extends AppCompatActivity {
                 new_view.getLayoutParams().height = 1000;
                 new_view.getLayoutParams().width = 1000;
                 myLayout.addView(new_view);
+                //Trying to do this here so above the flap
+                FragmentTransaction ft = manager.beginTransaction();
+                ft.replace(R.id.fragmentContainer, fragment);
+                ft.commit();
+                findViewById(R.id.fragmentContainer).bringToFront(); //WOO! This worked!
                 drag_options.setVisibility(View.GONE);
 
 

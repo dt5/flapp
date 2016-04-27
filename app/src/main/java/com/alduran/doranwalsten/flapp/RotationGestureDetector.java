@@ -8,6 +8,7 @@ public class RotationGestureDetector {
     private int ptrID1, ptrID2;
     private double mAngle;
     private double last_valid = 0.0;
+    private boolean rotation_activated = false;
 
     private OnRotationGestureListener mListener;
 
@@ -73,6 +74,14 @@ public class RotationGestureDetector {
         if (angle < -Math.PI) angle += Math.PI*2;
         if (angle > Math.PI) angle -= Math.PI*2;
         return angle;
+    }
+
+    public void setRotation_activated(boolean b) {
+        rotation_activated = b;
+    }
+
+    public boolean isActivated() {
+        return rotation_activated;
     }
 
     public static interface OnRotationGestureListener {

@@ -14,7 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="500dp"
             android:id="@+id/face_view"
-            android:src = "@drawable/feedback_2_1_right"
+            android:src = "@drawable/adv_feedback_bad"
             android:layout_alignParentTop="true"
             android:layout_alignParentStart="true" />
 

@@ -62,10 +62,11 @@
 
 
     <ListView
-        android:layout_width="75dp"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:id="@+id/list"
         android:layout_toLeftOf="@id/toolBar"
+        android:layout_marginRight="10dp"
         android:layout_marginTop = "125dp"/>
 
 
@@ -75,17 +76,10 @@
         android:id = "@+id/fragmentContainer">
     </RelativeLayout>
 
-    <!--
-    <fragment android:name = "layout.PlainBaseFragment"
-    android:id = "@+id/plainBase"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    tools:layout="@layout/fragment_plain_base"/>
-    -->
 
     <android.support.design.widget.FloatingActionButton
         android:id = "@+id/forwardButton"
-        android:src="@drawable/ic_forward_white_24dp"
+        android:src="@drawable/ic_right_white_24dp"
         app:backgroundTint = "@color/colorPrimary"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"

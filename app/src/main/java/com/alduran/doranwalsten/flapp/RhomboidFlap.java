@@ -39,6 +39,14 @@ public class RhomboidFlap extends View implements Flap, RotationGestureDetector.
     private int up = 1; //Switch between +1 for up, -1 for down
     private RotationGestureDetector mRotationDetector;
     private double rot = 0.0; //Store the current global rotation
+    boolean scale_activated = false;
+    boolean activated = true;
+
+    //Want us to preallocate the colors and paths
+    private Paint paint1;
+    private Paint paint2;
+    private Path path1;
+    private Path path2;
 
     public RhomboidFlap(Context context) {
         super(context);
@@ -52,6 +60,19 @@ public class RhomboidFlap extends View implements Flap, RotationGestureDetector.
         this.mDetector = new GestureDetectorCompat(context,new MoveListener(this));
         this.mRotationDetector = new RotationGestureDetector(this);
 
+        paint1 = new Paint();
+        paint1.setStyle(Paint.Style.STROKE);
+        paint1.setStrokeWidth(4);
+        paint1.setColor(android.graphics.Color.BLACK);
+
+        paint2 = new Paint();
+        paint2.setStyle(Paint.Style.FILL);
+        paint2.setColor(getResources().getColor(R.color.black));
+        paint2.setAlpha(65);
+
+        path1 = new Path();
+        path2 = new Path();
+
     }
 
     public void setAlpha(double a) {
@@ -62,6 +83,9 @@ public class RhomboidFlap extends View implements Flap, RotationGestureDetector.
     }
     public void setHeight(double ratio) {
         this.height = (int) Math.floor(this.width*ratio);
+    }
+    public void setActivated(boolean b) {
+        this.activated = b;
     }
     public void switchUp() {this.up *= -1 ;}
 
@@ -92,29 +116,42 @@ public class RhomboidFlap extends View implements Flap, RotationGestureDetector.
 
     @Override
     public void onDraw(Canvas canvas) {
+        if (activated) {
+            paint1.setColor(getResources().getColor(R.color.colorPrimary));
+            paint2.setColor(getResources().getColor(R.color.colorPrimary));
+            paint2.setAlpha(65);
+        } else {
+            paint1.setColor(getResources().getColor(R.color.black));
+            paint2.setColor(getResources().getColor(R.color.black));
+            paint2.setAlpha(65);
+        }
         //Get the points
         canvas.save();
         canvas.scale(mScaleFactor, mScaleFactor, 500, 500);
+        path1.reset();
+        path2.reset();
         ArrayList<Point> ref = calculatePoints();
-        //Set the style
-        Paint paint = new Paint();
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(4);
-        paint.setColor(android.graphics.Color.BLACK);
+
+        //Design the Fill
+        path2.moveTo(ref.get(0).x,ref.get(0).y);
+        path2.lineTo(ref.get(3).x, ref.get(3).y);
+        path2.lineTo(ref.get(4).x, ref.get(4).y);
+        path2.lineTo(ref.get(5).x, ref.get(5).y);
+        path2.lineTo(ref.get(0).x, ref.get(0).y);
+        path2.close();
+        canvas.drawPath(path2, paint2);
 
         //Design the outline
-        Path path = new Path();
-        path.moveTo(ref.get(0).x, ref.get(0).y);
-        path.lineTo(ref.get(1).x, ref.get(1).y);
-        path.lineTo(ref.get(2).x, ref.get(2).y);
-        path.moveTo(ref.get(0).x, ref.get(0).y);
-        path.lineTo(ref.get(3).x, ref.get(3).y);
-        path.lineTo(ref.get(4).x, ref.get(4).y);
-        path.lineTo(ref.get(5).x, ref.get(5).y);
-        path.lineTo(ref.get(0).x, ref.get(0).y);
-        path.close();
-
-        canvas.drawPath(path, paint);
+        path1.moveTo(ref.get(0).x, ref.get(0).y);
+        path1.lineTo(ref.get(1).x, ref.get(1).y);
+        path1.lineTo(ref.get(2).x, ref.get(2).y);
+        path1.moveTo(ref.get(0).x, ref.get(0).y);
+        path1.lineTo(ref.get(3).x, ref.get(3).y);
+        path1.lineTo(ref.get(4).x, ref.get(4).y);
+        path1.lineTo(ref.get(5).x, ref.get(5).y);
+        path1.lineTo(ref.get(0).x, ref.get(0).y);
+        path1.close();
+        canvas.drawPath(path1, paint1);
 
         canvas.restore();
 
@@ -122,16 +159,36 @@ public class RhomboidFlap extends View implements Flap, RotationGestureDetector.
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-        // Let the ScaleGestureDetector inspect all events.
-        mScaleDetector.onTouchEvent(ev);
+
+        //mScaleDetector.onTouchEvent(ev);
         mDetector.onTouchEvent(ev);
-        mRotationDetector.onTouchEvent(ev);
+        //mRotationDetector.onTouchEvent(ev);
+
+        //Only want to do drag if no other events occur
+        if ((ev.getEventTime() - ev.getDownTime() > 50) ) {
+            activated = true;
+            invalidate();
+             //Redraw the flap
+
+            setTouchpoint(ev.getRawX(), ev.getRawY());
+            ClipData clipData = ClipData.newPlainText("", "");
+
+            //Use Bitmap to create Shadow
+            setDrawingCacheEnabled(true);
+            Bitmap viewCapture = getDrawingCache();
+            FlapDragShadowBuilder shadowBuilder = new FlapDragShadowBuilder(viewCapture);
+            shadowBuilder.setDisplacement(getDisplacement()[0], getDisplacement()[1]);
+            startDrag(clipData, shadowBuilder, this, 0);
+            setVisibility(View.GONE);
+        }
+
         return true;
     }
 
 
     //This class should hopefully just detect the scale events
     private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
+
         @Override
         public boolean onScale(ScaleGestureDetector detector) {
             mScaleFactor *= detector.getScaleFactor();
@@ -148,12 +205,14 @@ public class RhomboidFlap extends View implements Flap, RotationGestureDetector.
     private class MoveListener extends GestureDetector.SimpleOnGestureListener {
 
         View parent;
+
+
         public MoveListener(View v) {
             parent = v;
         }
 
         @Override
-        public boolean onSingleTapUp(MotionEvent ev) {
+        public boolean onDoubleTap(MotionEvent ev) {
 
             final RelativeLayout parent_layout = (RelativeLayout) parent.getParent();
             final FloatingActionButton forward = (FloatingActionButton) parent_layout.findViewById(R.id.forwardButton);
@@ -162,23 +221,9 @@ public class RhomboidFlap extends View implements Flap, RotationGestureDetector.
             forward.setVisibility(View.VISIBLE);
             edit.setVisibility(View.VISIBLE);
             cancel.setVisibility(View.VISIBLE);
-
+            activated = true;
+            invalidate();
             return true;
-        }
-
-        @Override
-        public void onLongPress(MotionEvent ev) {
-            setTouchpoint(ev.getRawX(), ev.getRawY());
-            ClipData clipData = ClipData.newPlainText("", "");
-
-            //Use Bitmap to create Shadow
-            setDrawingCacheEnabled(true);
-            Bitmap viewCapture = getDrawingCache();
-            FlapDragShadowBuilder shadowBuilder = new FlapDragShadowBuilder(viewCapture);
-            shadowBuilder.setDisplacement(getDisplacement()[0], getDisplacement()[1]);
-            startDrag(clipData, shadowBuilder, parent, 0);
-            setVisibility(View.GONE);
-
         }
     }
     //

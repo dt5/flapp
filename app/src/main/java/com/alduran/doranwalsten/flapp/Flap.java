@@ -21,6 +21,9 @@ public interface Flap {
     float[] getTouchpoint();
     float[] getDisplacement();
 
+    boolean isActivated();
+    void setActivated(boolean b);
+
     //Points for onDraw method, which all Views have
     ArrayList<Point> calculatePoints();
 

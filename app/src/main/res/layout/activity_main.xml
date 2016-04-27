@@ -18,19 +18,8 @@
         <Button
             android:layout_width="150dp"
             android:layout_height="50dp"
-            android:layout_centerHorizontal="true"
+            android:id ="@+id/design_button"
             android:layout_centerVertical="true"
-            android:id = "@+id/design_button"
-            android:text = "TUTORIAL"
-            android:textSize = "15dp"
-            android:onClick="tutorialButtonPressed">
-
-        </Button>
-        <Button
-            android:layout_width="150dp"
-            android:layout_height="50dp"
-            android:id ="@+id/rotate_button"
-            android:layout_above="@id/design_button"
             android:layout_centerHorizontal="true"
             android:text = "DESIGN"
             android:textSize = "15dp"

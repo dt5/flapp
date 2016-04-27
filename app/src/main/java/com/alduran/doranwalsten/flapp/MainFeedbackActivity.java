@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import pl.droidsonroids.gif.GifImageView;
 
@@ -24,6 +25,10 @@ public class MainFeedbackActivity extends AppCompatActivity {
         FloatingActionButton accept = (FloatingActionButton) findViewById(R.id.acceptButton_F);
         FloatingActionButton edit = (FloatingActionButton) findViewById(R.id.editButton);
         FloatingActionButton cancel = (FloatingActionButton) findViewById(R.id.cancelButton_F);
+
+        Bundle extras = getIntent().getExtras();
+        ImageView face = (ImageView) findViewById(R.id.face_view);
+        face.setImageResource(extras.getInt("image_res"));
 
         accept.setOnTouchListener(new View.OnTouchListener() {
             @Override
