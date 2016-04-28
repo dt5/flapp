@@ -87,7 +87,7 @@ public class AdvancementBaseFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 curr_flap.setPedicle(1);
-                curr_flap.setActivated(true);
+                curr_flap.setFlapActivated(true);
                 curr_flap.invalidate();
                 parentLayout.findViewById(R.id.acceptButton).setVisibility(View.VISIBLE);
                 parentLayout.findViewById(R.id.quitButton).setVisibility(View.VISIBLE);
@@ -106,7 +106,7 @@ public class AdvancementBaseFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 curr_flap.setPedicle(2);
-                curr_flap.setActivated(true);
+                curr_flap.setFlapActivated(true);
                 curr_flap.invalidate();
                 parentLayout.findViewById(R.id.acceptButton).setVisibility(View.VISIBLE);
                 parentLayout.findViewById(R.id.quitButton).setVisibility(View.VISIBLE);
@@ -124,7 +124,7 @@ public class AdvancementBaseFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 curr_flap.setPedicle(3);
-                curr_flap.setActivated(true);
+                curr_flap.setFlapActivated(true);
                 curr_flap.invalidate();
                 parentLayout.findViewById(R.id.acceptButton).setVisibility(View.VISIBLE);
                 parentLayout.findViewById(R.id.quitButton).setVisibility(View.VISIBLE);
@@ -142,7 +142,7 @@ public class AdvancementBaseFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 curr_flap.setPedicle(4);
-                curr_flap.setActivated(true);
+                curr_flap.setFlapActivated(true);
                 curr_flap.invalidate();
                 parentLayout.findViewById(R.id.acceptButton).setVisibility(View.VISIBLE);
                 parentLayout.findViewById(R.id.quitButton).setVisibility(View.VISIBLE);
@@ -218,7 +218,7 @@ public class AdvancementBaseFragment extends Fragment {
                 int specific_range = bound[2*(curr_flap.isActivated() ? 1: 0) + 1] - bound[2*(curr_flap.isActivated() ? 1: 0)];
                 int specific_bottom = bound[2*(curr_flap.isActivated() ? 1: 0)];
                 double display_value = (progressChanged * specific_range)/100. + specific_bottom;
-                if (!curr_flap.isActivated()) {
+                if (!curr_flap.isFlapActivated()) {
                     curr_flap.setDefectRatio(display_value);
                 } else {
                     curr_flap.setBurrowAngle(display_value);

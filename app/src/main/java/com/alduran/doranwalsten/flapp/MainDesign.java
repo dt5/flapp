@@ -70,6 +70,7 @@ public class MainDesign extends AppCompatActivity {
         final FloatingActionButton accept = (FloatingActionButton) findViewById(R.id.acceptButton);
         final FloatingActionButton edit = (FloatingActionButton) findViewById(R.id.editFlapButton);
         final FloatingActionButton cancel = (FloatingActionButton) findViewById(R.id.quitButton);
+        final FloatingActionButton rotate = (FloatingActionButton) findViewById(R.id.rotateButton);
         final Button ddb = (Button) findViewById(R.id.drag_drop);
 
         forward.setOnClickListener(new View.OnClickListener() {
@@ -93,12 +94,11 @@ public class MainDesign extends AppCompatActivity {
 
         accept.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                forward.setVisibility(View.GONE);
+                //forward.setVisibility(View.GONE);
                 accept.setVisibility(View.GONE);
-                edit.setVisibility(View.GONE);
-                cancel.setVisibility(View.GONE);
+                edit.setVisibility(View.VISIBLE);
+                //cancel.setVisibility(View.GONE);
 
-                curr_flap.setActivated(false);
                 ((View) curr_flap).invalidate();
 
                 Fragment fragment = new PlainBaseFragment();
@@ -134,6 +134,7 @@ public class MainDesign extends AppCompatActivity {
                 accept.setVisibility(View.GONE);
                 edit.setVisibility(View.GONE);
                 cancel.setVisibility(View.GONE);
+                rotate.setVisibility(View.GONE);
                 Fragment fragment = new PlainBaseFragment();
                 FragmentTransaction ft = manager.beginTransaction();
                 ft.replace(R.id.fragmentContainer, fragment);
@@ -142,7 +143,27 @@ public class MainDesign extends AppCompatActivity {
                 //In addition, need to remove the current design
                 deleteFlap(curr_flap);
                 ddb.setEnabled(true);//Allowed to use that button again
+                //Allow the face to be moved again
+                if (curr_face.myCamera.getMode()) {
+                    myFab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimaryDark)));
+                } else {
+                    myFab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
+                }
 
+            }
+        });
+
+        rotate.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (curr_flap.isScaleActivated()) {
+                    curr_flap.setScaleActivated(false);
+                    rotate.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
+                    rotate.setImageResource(R.drawable.ic_rotate_90_degrees_ccw_white_24dp);
+                } else {
+                    curr_flap.setScaleActivated(true);
+                    rotate.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.white)));
+                    rotate.setImageResource(R.drawable.ic_rotate_90_degrees_ccw_purple_24dp);
+                }
             }
         });
         //Setup the usual selection stuff (Table View)
@@ -160,6 +181,13 @@ public class MainDesign extends AppCompatActivity {
                 adding = true;
                 open = false;
 
+                //Shut down the face
+                curr_face.switchCameraMode();
+                if (curr_face.myCamera.getMode()) {
+                    myFab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimaryDark)));
+                } else {
+                    myFab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
+                }
                 RelativeLayout myLayout = (RelativeLayout) findViewById(R.id.designLayout);
                 RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT );
                 params.addRule(RelativeLayout.CENTER_HORIZONTAL,RelativeLayout.TRUE);
@@ -167,9 +195,6 @@ public class MainDesign extends AppCompatActivity {
                 //NOW! Need to initialize the specific fragment and flap for design
                 Flap new_flap;
                 Fragment fragment;
-                FloatingActionButton forward = (FloatingActionButton) findViewById(R.id.forwardButton);
-                FloatingActionButton accept = (FloatingActionButton) findViewById(R.id.acceptButton);
-                FloatingActionButton cancel = (FloatingActionButton) findViewById(R.id.quitButton);
                 //Determine which Flap needs to be added
                 if (position == 0) { //Rhomboid Flap
                     new_flap = new RhomboidFlap(getBaseContext());
@@ -178,6 +203,7 @@ public class MainDesign extends AppCompatActivity {
                     forward.setVisibility(View.VISIBLE);
                     accept.setVisibility(View.VISIBLE);
                     cancel.setVisibility(View.VISIBLE);
+                    rotate.setVisibility(View.VISIBLE);
                 } else if (position == 1) { //Advancement Flap
                     new_flap = new AdvancementFlap(getBaseContext());
                     //Need to initiate the new Fragment

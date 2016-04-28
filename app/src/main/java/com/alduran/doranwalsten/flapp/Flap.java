@@ -23,6 +23,8 @@ public interface Flap {
 
     boolean isActivated();
     void setActivated(boolean b);
+    void setScaleActivated(boolean b);
+    boolean isScaleActivated();
 
     //Points for onDraw method, which all Views have
     ArrayList<Point> calculatePoints();

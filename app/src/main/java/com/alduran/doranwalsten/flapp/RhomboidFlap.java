@@ -84,6 +84,8 @@ public class RhomboidFlap extends View implements Flap, RotationGestureDetector.
     public void setHeight(double ratio) {
         this.height = (int) Math.floor(this.width*ratio);
     }
+    public void setScaleActivated(boolean b) { this.scale_activated = b;}
+    public boolean isScaleActivated() {return this.scale_activated;}
     public void setActivated(boolean b) {
         this.activated = b;
     }
@@ -160,26 +162,28 @@ public class RhomboidFlap extends View implements Flap, RotationGestureDetector.
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
 
-        //mScaleDetector.onTouchEvent(ev);
-        mDetector.onTouchEvent(ev);
-        //mRotationDetector.onTouchEvent(ev);
+        if (scale_activated) {
+            mScaleDetector.onTouchEvent(ev);
+            mRotationDetector.onTouchEvent(ev);
+        } else {
+            mDetector.onTouchEvent(ev);
+            //Only want to do drag if no other events occur
+            if ((ev.getEventTime() - ev.getDownTime() > 75)) {
+                activated = false;
+                invalidate();
+                //Redraw the flap
 
-        //Only want to do drag if no other events occur
-        if ((ev.getEventTime() - ev.getDownTime() > 50) ) {
-            activated = true;
-            invalidate();
-             //Redraw the flap
+                setTouchpoint(ev.getRawX(), ev.getRawY());
+                ClipData clipData = ClipData.newPlainText("", "");
 
-            setTouchpoint(ev.getRawX(), ev.getRawY());
-            ClipData clipData = ClipData.newPlainText("", "");
-
-            //Use Bitmap to create Shadow
-            setDrawingCacheEnabled(true);
-            Bitmap viewCapture = getDrawingCache();
-            FlapDragShadowBuilder shadowBuilder = new FlapDragShadowBuilder(viewCapture);
-            shadowBuilder.setDisplacement(getDisplacement()[0], getDisplacement()[1]);
-            startDrag(clipData, shadowBuilder, this, 0);
-            setVisibility(View.GONE);
+                //Use Bitmap to create Shadow
+                setDrawingCacheEnabled(true);
+                Bitmap viewCapture = getDrawingCache();
+                FlapDragShadowBuilder shadowBuilder = new FlapDragShadowBuilder(viewCapture);
+                shadowBuilder.setDisplacement(getDisplacement()[0], getDisplacement()[1]);
+                startDrag(clipData, shadowBuilder, this, 0);
+                setVisibility(View.INVISIBLE);
+            }
         }
 
         return true;

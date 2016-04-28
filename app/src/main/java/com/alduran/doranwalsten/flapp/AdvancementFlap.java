@@ -35,6 +35,7 @@ public class AdvancementFlap extends View implements Flap, RotationGestureDetect
     private float[] displacement = {0,0};
     private boolean flap_activated = false;//Variable to indicate whether the full advancement flap needs to be shwon
     private boolean activated = false;
+    private boolean scale_activated = false;
     private RotationGestureDetector mRotationDetector;
     private double rot = 0.0; //Store the current global rotation
     private GestureDetectorCompat mDetector;
@@ -99,6 +100,8 @@ public class AdvancementFlap extends View implements Flap, RotationGestureDetect
         this.mScaleFactor = 1.0f;
     }
     public boolean isFlapActivated() {return this.flap_activated;}
+    public void setScaleActivated(boolean b) { this.scale_activated = b;}
+    public boolean isScaleActivated() {return this.scale_activated;}
 
     public void setActivated(boolean b) {
         this.activated = b;

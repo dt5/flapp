@@ -49,7 +49,7 @@ public class ObjectPickingFragment extends BaseFragment implements
                     case DragEvent.ACTION_DROP:
                         //Dumb switch here, couldn't find a way to get Flap to inherit View
                         Flap curr_flap = (Flap) event.getLocalState();
-                        curr_flap.setActivated(false);
+                        curr_flap.setActivated(true);
                         View curr_view = (View) curr_flap;
                         curr_view.invalidate();
                         curr_view.setX(event.getX() - curr_flap.getWidth() / 2 - curr_flap.getDisplacement()[0]);

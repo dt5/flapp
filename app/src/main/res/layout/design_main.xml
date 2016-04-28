@@ -91,8 +91,8 @@
 
     <android.support.design.widget.FloatingActionButton
         android:id = "@+id/acceptButton"
-        android:src="@drawable/ic_done_white_24dp"
-        app:backgroundTint = "@color/colorPrimary"
+        android:src="@drawable/ic_done_purple_24dp"
+        app:backgroundTint = "@color/white"
         android:layout_above="@id/forwardButton"
         android:layout_alignParentRight="true"
         android:clickable="true"
@@ -122,6 +122,20 @@
         android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id = "@+id/rotateButton"
+        android:src="@drawable/ic_rotate_90_degrees_ccw_white_24dp"
+        app:backgroundTint = "@color/colorPrimary"
+        android:layout_above = "@id/quitButton"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="60dp"
+        android:clickable="true"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+
 
 
 </RelativeLayout>
