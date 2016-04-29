@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -22,38 +21,41 @@ public class MainFeedbackActivity extends AppCompatActivity {
         FloatingActionButton accept = (FloatingActionButton) findViewById(R.id.acceptButton_F);
         FloatingActionButton edit = (FloatingActionButton) findViewById(R.id.editButton);
         FloatingActionButton cancel = (FloatingActionButton) findViewById(R.id.cancelButton_F);
+        FloatingActionButton camera_feed = (FloatingActionButton) findViewById(R.id.cameraButton_F);
 
         Bundle extras = getIntent().getExtras();
         ImageView face = (ImageView) findViewById(R.id.face_view);
         face.setImageResource(extras.getInt("image_res"));
 
-        accept.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent m) {
+        accept.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
                 Intent getFeedback = new Intent(MainFeedbackActivity.this,MainActivity.class);
                 startActivity(getFeedback);
-                return true;
             }
         });
 
         //For the edit button, we want to go back to the Rhomboid Activity
-        edit.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent m) {
+        edit.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
                 Intent addDesign = new Intent(MainFeedbackActivity.this, MainDesign.class);
                 startActivity(addDesign);
-                return true;
             }
         });
 
         //For the quit  button, want to go back to the flap selection page
-        cancel.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent m) {
+        cancel.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
                 Intent quit = new Intent(MainFeedbackActivity.this, MainActivity.class);
                 startActivity(quit);
-                return true;
             }
+        });
+
+        camera_feed.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent feed = new Intent(MainFeedbackActivity.this, LiveFeedActivity.class);
+                startActivity(feed);
+            }
+
         });
     }
 
