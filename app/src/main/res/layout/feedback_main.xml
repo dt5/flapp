@@ -59,15 +59,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
                 android:layout_alignParentBottom="true"
-                android:src="@drawable/adv_45_right_21_stress"
-                android:id="@+id/stress_gif" />
+                android:src="@drawable/adv_45_right_21_strain"
+                android:id="@+id/strain_gif" />
 
             <pl.droidsonroids.gif.GifImageView
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
                 android:layout_alignParentBottom="true"
                 android:src="@drawable/adv_45_right_21_stress"
-                android:id="@+id/strain_gif" />
+                android:id="@+id/stress_gif" />
         </LinearLayout>
 
     </ScrollView>
