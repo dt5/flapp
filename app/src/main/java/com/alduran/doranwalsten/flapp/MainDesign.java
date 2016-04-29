@@ -208,6 +208,7 @@ public class MainDesign extends AppCompatActivity {
                     new_flap = new AdvancementFlap(getBaseContext());
                     //Need to initiate the new Fragment
                     fragment = new AdvancementBaseFragment();
+                    rotate.setVisibility(View.VISIBLE);
                     //Only want accept and cancel visible initially
                 } else {
                     new_flap = null;

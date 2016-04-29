@@ -19,7 +19,7 @@
             android:screenOrientation="portrait">
         </activity>
         <activity android:name=".MainFeedbackActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="landscape">
         </activity>
 
     </application>

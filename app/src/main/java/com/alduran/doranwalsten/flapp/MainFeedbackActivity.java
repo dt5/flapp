@@ -6,10 +6,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
-
-import pl.droidsonroids.gif.GifImageView;
 
 /**
  * Created by doranwalsten on 4/5/16.
@@ -60,6 +57,7 @@ public class MainFeedbackActivity extends AppCompatActivity {
         });
     }
 
+    /*
     public void stressPressed(View v) {
         Button strain_button = (Button) findViewById(R.id.strainButton);
         Button stress_button = (Button) findViewById(R.id.stressButton);
@@ -93,4 +91,5 @@ public class MainFeedbackActivity extends AppCompatActivity {
         stress_button.setTextColor(getResources().getColor(R.color.black));
 
     }
+    */
 }

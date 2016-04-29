@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.GestureDetectorCompat;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -34,7 +35,7 @@ public class AdvancementFlap extends View implements Flap, RotationGestureDetect
     private float[] touchpoint = new float[2];
     private float[] displacement = {0,0};
     private boolean flap_activated = false;//Variable to indicate whether the full advancement flap needs to be shwon
-    private boolean activated = false;
+    private boolean activated = true; //Begins as true
     private boolean scale_activated = false;
     private RotationGestureDetector mRotationDetector;
     private double rot = 0.0; //Store the current global rotation
@@ -139,6 +140,18 @@ public class AdvancementFlap extends View implements Flap, RotationGestureDetect
         path2.reset();
         path3.reset();
         path4.reset();
+
+        //Set the paints based on activated, inactivated
+        if (activated) {
+            paint1.setColor(getResources().getColor(R.color.colorPrimary));
+            paint2.setColor(getResources().getColor(R.color.colorPrimary));
+            paint2.setAlpha(65);
+        } else {
+            paint1.setColor(getResources().getColor(R.color.black));
+            paint2.setColor(getResources().getColor(R.color.black));
+            paint2.setAlpha(65);
+        }
+
         //No scaling this time, want the slider outputs to be correct to the dimensions needed
         ArrayList<Point> ref = calculatePoints();
 
@@ -314,9 +327,29 @@ public class AdvancementFlap extends View implements Flap, RotationGestureDetect
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
         // Let the ScaleGestureDetector inspect all events.
-        mDetector.onTouchEvent(ev);
-        mRotationDetector.onTouchEvent(ev);
-        mScaleDetector.onTouchEvent(ev);
+        if (scale_activated) {
+            mRotationDetector.onTouchEvent(ev);
+            mScaleDetector.onTouchEvent(ev);
+        } else {
+            mDetector.onTouchEvent(ev);
+            //Only want to do drag if no other events occur
+            if ((ev.getEventTime() - ev.getDownTime() > 75)) {
+                activated = false;
+                invalidate();
+                //Redraw the flap
+
+                setTouchpoint(ev.getRawX(), ev.getRawY());
+                ClipData clipData = ClipData.newPlainText("", "");
+
+                //Use Bitmap to create Shadow
+                setDrawingCacheEnabled(true);
+                Bitmap viewCapture = getDrawingCache();
+                FlapDragShadowBuilder shadowBuilder = new FlapDragShadowBuilder(viewCapture);
+                shadowBuilder.setDisplacement(getDisplacement()[0], getDisplacement()[1]);
+                startDrag(clipData, shadowBuilder, this, 0);
+                setVisibility(View.INVISIBLE);
+            }
+        }
         return true;
     }
 
@@ -345,29 +378,20 @@ public class AdvancementFlap extends View implements Flap, RotationGestureDetect
             parent = v;
         }
 
+        //Currently am not using, but that may change! Probabl want to detect other gestures at some point
         @Override
-        public boolean onSingleTapUp(MotionEvent ev) {
-            if (flap_activated) {
-                RelativeLayout parent_layout = (RelativeLayout) parent.getParent();
-                parent_layout.findViewById(R.id.forwardButton).setVisibility(View.VISIBLE);
-                parent_layout.findViewById(R.id.editFlapButton).setVisibility(View.VISIBLE);
-                parent_layout.findViewById(R.id.quitButton).setVisibility(View.VISIBLE);
-            }
+        public boolean onDoubleTap(MotionEvent ev) {
+
+            final RelativeLayout parent_layout = (RelativeLayout) parent.getParent();
+            final FloatingActionButton forward = (FloatingActionButton) parent_layout.findViewById(R.id.forwardButton);
+            final FloatingActionButton edit = (FloatingActionButton) parent_layout.findViewById(R.id.editFlapButton);
+            final FloatingActionButton cancel = (FloatingActionButton) parent_layout.findViewById(R.id.quitButton);
+            forward.setVisibility(View.VISIBLE);
+            edit.setVisibility(View.VISIBLE);
+            cancel.setVisibility(View.VISIBLE);
+            activated = true;
+            invalidate();
             return true;
-        }
-
-        @Override
-        public void onLongPress(MotionEvent ev) {
-            setTouchpoint(ev.getRawX(), ev.getRawY());
-            ClipData clipData = ClipData.newPlainText("", "");
-
-            //Use Bitmap to create Shadow
-            setDrawingCacheEnabled(true);
-            Bitmap viewCapture = getDrawingCache();
-            FlapDragShadowBuilder shadowBuilder = new FlapDragShadowBuilder(viewCapture);
-            shadowBuilder.setDisplacement(getDisplacement()[0], getDisplacement()[1]);
-            startDrag(clipData, shadowBuilder, parent, 0);
-            setVisibility(View.GONE);
         }
     }
 
