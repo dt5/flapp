@@ -9,8 +9,8 @@
 
     <android.support.design.widget.FloatingActionButton
         android:id = "@+id/moveButton"
-        android:src="@drawable/ic_games_white_24dp"
-        app:backgroundTint = "@color/colorPrimaryDark"
+        android:src="@drawable/ic_noportrait_purple_24dp"
+        app:backgroundTint = "@color/white"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:clickable="true"
@@ -43,7 +43,7 @@
         <Button
             android:layout_width="45dp"
             android:layout_height="45dp"
-            android:background="@drawable/ic_pan_tool_white_24dp"
+            android:background="@drawable/dragndrop"
             android:id="@+id/drag_drop"
             android:layout_below="@id/free_draw"
             android:layout_marginTop="50dp"
@@ -83,7 +83,7 @@
         app:backgroundTint = "@color/colorPrimary"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="75dp"
+        android:layout_marginBottom="125dp"
         android:clickable="true"
         android:visibility="gone"
         android:layout_width="wrap_content"

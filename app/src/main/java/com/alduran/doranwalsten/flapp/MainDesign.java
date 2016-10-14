@@ -60,9 +60,11 @@ public class MainDesign extends AppCompatActivity {
             public void onClick(View v) {
                 curr_face.switchCameraMode();
                 if (curr_face.myCamera.getMode()) {
-                    myFab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimaryDark)));
+                    myFab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.white)));
+                    myFab.setImageResource(R.drawable.ic_noportrait_purple_24dp);
                 } else {
                     myFab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
+                    myFab.setImageResource(R.drawable.ic_portrait_white_24dp);
                 }
             }
         });
@@ -83,8 +85,10 @@ public class MainDesign extends AppCompatActivity {
                 ImageView feedback = (ImageView) findViewById(R.id.face_view);
                 if (curr_flap instanceof RhomboidFlap) {
                     next.putExtra("image_res",R.drawable.rhomboid_feedback_bad);
+                    next.putExtra("flap_type",0);//True is rhomboid
                 } else if (curr_flap instanceof AdvancementFlap) {
                     next.putExtra("image_res",R.drawable.adv_feedback_bad);
+                    next.putExtra("flap_type",1);
                 }
                 startActivity(next);
             }
@@ -144,10 +148,11 @@ public class MainDesign extends AppCompatActivity {
                 deleteFlap(curr_flap);
                 ddb.setEnabled(true);//Allowed to use that button again
                 //Allow the face to be moved again
-                if (curr_face.myCamera.getMode()) {
-                    myFab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimaryDark)));
-                } else {
-                    myFab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
+
+                if (!curr_face.myCamera.getMode()) {
+                    curr_face.switchCameraMode();
+                    myFab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.white)));
+                    myFab.setImageResource(R.drawable.ic_noportrait_purple_24dp);
                 }
 
             }
@@ -182,11 +187,11 @@ public class MainDesign extends AppCompatActivity {
                 open = false;
 
                 //Shut down the face
-                curr_face.switchCameraMode();
-                if (curr_face.myCamera.getMode()) {
-                    myFab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimaryDark)));
-                } else {
+
+                if (curr_face.myCamera.getMode()) { //Need to turn it off
+                    curr_face.switchCameraMode();
                     myFab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
+                    myFab.setImageResource(R.drawable.ic_portrait_white_24dp);
                 }
                 RelativeLayout myLayout = (RelativeLayout) findViewById(R.id.designLayout);
                 RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT );

@@ -7,35 +7,10 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="75dp"
+        android:layout_height="125dp"
         android:layout_alignParentBottom="true"
         android:background="@drawable/bottommenu"
         android:id="@+id/advView" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="RIGHT"
-        android:textColor = "@color/white"
-        android:background="@color/colorPrimary"
-        android:id="@+id/rightTriButton"
-        android:enabled="false"
-        android:visibility="gone"
-        android:onClick="downButtonPressed"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="15dp"
-        android:layout_marginLeft="40dp"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ISO"
-        android:id="@+id/IsoTriButton"
-        android:background="@color/gray"
-        android:enabled = "true"
-        android:visibility = "gone"
-        android:layout_alignTop="@id/rightTriButton"
-        android:layout_toEndOf="@id/rightTriButton" />
 
     <SeekBar
         android:id="@+id/advSeekBar_1"
@@ -51,14 +26,22 @@
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"/>
 
+    <ImageView
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:id="@+id/parameterPic"
+        android:src = "@drawable/advratio_icon"
+        android:layout_above="@+id/advSeekBar_1"
+        android:layout_alignStart="@+id/advSeekBar_1" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
+        android:text="1.0"
         android:id="@+id/advTextView1"
-        android:layout_above="@id/advSeekBar_1"
-        android:layout_alignStart="@id/advSeekBar_1" />
+        android:layout_above="@+id/advSeekBar_1"
+        android:layout_toRightOf="@id/parameterPic"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id = "@+id/advAcceptButton"

@@ -63,16 +63,16 @@ public class RhomboidBaseFragment extends Fragment {
         parameters[1] = (SeekBar) mLayout.findViewById(R.id.seekBar_2); //ALPHA
         parameters[2] = (SeekBar) mLayout.findViewById(R.id.seekBar_3); //BETA
 
-        names[0] = "Ratio";
-        names[1] = "Alpha";
-        names[2] = "Beta";
+        //names[0] = "Ratio";
+        //names[1] = "Alpha";
+        //names[2] = "Beta";
 
         titles[0] = (TextView) mLayout.findViewById(R.id.textView1);
-        titles[0].setText(String.format("%s: 1.73",names[0]));
+        titles[0].setText("1.73");
         titles[1] = (TextView) mLayout.findViewById(R.id.textView2);
-        titles[1].setText(String.format("%s: 0.0",names[1]));
+        titles[1].setText("0.0");
         titles[2] = (TextView) mLayout.findViewById(R.id.textView3);
-        titles[2].setText(String.format("%s: 60.0", names[2]));
+        titles[2].setText("60.0");
 
         double[] ratio_bound = {1.0,2.0};
         bounds.add(ratio_bound);
@@ -156,7 +156,7 @@ public class RhomboidBaseFragment extends Fragment {
                             break;
                     }
                     curr_flap.invalidate();
-                    specific_text.setText(String.format("%s : %.2f",name, display_value));
+                    specific_text.setText(String.format("%.2f",display_value));
                 }
 
                 @Override

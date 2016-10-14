@@ -11,6 +11,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
     }
 
     public void designButtonPressed(View v) {
@@ -19,7 +20,4 @@ public class MainActivity extends AppCompatActivity {
         startActivity(viewFaceIntent);
     }
 
-    public void tutorialButtonPressed(View v) {
-        //Make a new intent to begin the tutorial
-    }
 }

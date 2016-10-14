@@ -18,21 +18,13 @@ public class MainFeedbackActivity extends AppCompatActivity {
         setContentView(R.layout.feedback_main);
 
         //Declare what each of the buttons is doing
-        FloatingActionButton accept = (FloatingActionButton) findViewById(R.id.acceptButton_F);
         FloatingActionButton edit = (FloatingActionButton) findViewById(R.id.editButton);
         FloatingActionButton cancel = (FloatingActionButton) findViewById(R.id.cancelButton_F);
         FloatingActionButton camera_feed = (FloatingActionButton) findViewById(R.id.cameraButton_F);
 
-        Bundle extras = getIntent().getExtras();
+        final Bundle extras = getIntent().getExtras();
         ImageView face = (ImageView) findViewById(R.id.face_view);
         face.setImageResource(extras.getInt("image_res"));
-
-        accept.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent getFeedback = new Intent(MainFeedbackActivity.this,MainActivity.class);
-                startActivity(getFeedback);
-            }
-        });
 
         //For the edit button, we want to go back to the Rhomboid Activity
         edit.setOnClickListener(new View.OnClickListener() {
@@ -53,6 +45,7 @@ public class MainFeedbackActivity extends AppCompatActivity {
         camera_feed.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent feed = new Intent(MainFeedbackActivity.this, LiveFeedActivity.class);
+                feed.putExtra("flap_type",extras.getInt("flap_type"));
                 startActivity(feed);
             }
 

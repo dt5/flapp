@@ -6,7 +6,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="75dp"
+        android:layout_height="125dp"
         android:layout_alignParentBottom="true"
         android:background="@drawable/bottommenu"
         android:id="@+id/rhomboidView" />
@@ -20,8 +20,9 @@
         android:id="@+id/upButton"
         android:enabled="false"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="15dp"
-        android:layout_marginLeft="40dp"/>
+        android:layout_marginBottom="35dp"
+        android:layout_marginLeft="40dp"
+        />
 
     <Button
         android:layout_width="wrap_content"
@@ -44,8 +45,17 @@
         android:maxHeight="3dp"
         android:progressDrawable="@drawable/custom_slider"
         android:thumb="@drawable/purple_scrubber_control"
-        android:layout_centerHorizontal="true"
+        android:layout_toRightOf="@id/downButton"
+        android:layout_marginLeft="50dp"
         android:layout_alignParentBottom="true"/>
+
+    <ImageView
+    android:layout_width="75dp"
+    android:layout_height="75dp"
+    android:id="@+id/ratioPic"
+        android:src = "@drawable/ratio_icon"
+    android:layout_above="@+id/seekBar_1"
+    android:layout_alignStart="@+id/seekBar_1" />
 
     <SeekBar
         android:id="@+id/seekBar_2"
@@ -63,6 +73,15 @@
         android:layout_marginLeft="75dp"/>
 
 
+    <ImageView
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:id="@+id/alphaPic"
+        android:src = "@drawable/alpha_icon"
+        android:layout_above="@+id/seekBar_1"
+        android:layout_alignStart="@+id/seekBar_2" />
+
+
 
     <SeekBar
         android:id="@+id/seekBar_3"
@@ -75,35 +94,47 @@
         android:maxHeight="3dp"
         android:progressDrawable="@drawable/custom_slider"
         android:thumb="@drawable/purple_scrubber_control"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"/>
+        android:layout_toRightOf="@id/seekBar_2"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="75dp"/>
+
+    <ImageView
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:id="@+id/betaPic"
+        android:src = "@drawable/beta_icon"
+        android:layout_above="@+id/seekBar_3"
+        android:layout_alignStart="@+id/seekBar_3" />
+
+
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
+        android:text="1.73"
         android:id="@+id/textView1"
         android:layout_above="@+id/seekBar_1"
-        android:layout_centerHorizontal="true" />
+        android:layout_toRightOf="@id/ratioPic" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
+        android:text="0.0"
         android:id="@+id/textView2"
         android:layout_above="@+id/seekBar_2"
-        android:layout_alignStart="@+id/seekBar_2" />
+        android:layout_toRightOf="@id/alphaPic" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
+        android:text="0.0"
         android:id="@+id/textView3"
         android:layout_above="@+id/seekBar_3"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_toRightOf="@id/betaPic" />
+
+
+
 </RelativeLayout>

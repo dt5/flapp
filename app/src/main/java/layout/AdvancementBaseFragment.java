@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 public class AdvancementBaseFragment extends Fragment {
 
     SeekBar[] parameters = new SeekBar[2];
+    ImageView[] param_pics = new ImageView[2];
     String[] names = new String[2];
     TextView[] titles = new TextView[2];
     ArrayList<double[]> bounds = new ArrayList<double[]>();
@@ -63,19 +65,26 @@ public class AdvancementBaseFragment extends Fragment {
 
         parameters[0] = (SeekBar) mLayout.findViewById(R.id.advSeekBar_1); //RATIO
         parameters[0].setMax(100);
+
+        param_pics[0] = (ImageView) mLayout.findViewById((R.id.parameterPic));
         //Assume that the user wants complete freedom over the dimension of the defect
 
         names[0] = "Ratio";
         names[1] = "Angle";
 
         titles[0] = (TextView) mLayout.findViewById(R.id.advTextView1);
-        titles[0].setText(String.format("%s: 1.0",names[(curr_flap.isActivated() ? 1 : 0)]));
+        if (curr_flap.isFlapActivated()) {
+            param_pics[0].setImageResource(R.drawable.burrow_angle_icon);
+            titles[0].setText(String.format("%.2f",curr_flap.getBurrowAngle()));
+        } else {
+            titles[0].setText(String.format("%s: 1.0", names[(curr_flap.isActivated() ? 1 : 0)]));
+        }
 
         //TODO - Set the Triangle buttons here! Need to adjust the design
 
         //TODO - Set the Accept, Cancel buttons for defect
-        FloatingActionButton defAccept = (FloatingActionButton) mLayout.findViewById(R.id.advAcceptButton);
-        FloatingActionButton defDelete = (FloatingActionButton) mLayout.findViewById(R.id.advQuitButton);
+        final FloatingActionButton defAccept = (FloatingActionButton) mLayout.findViewById(R.id.advAcceptButton);
+        final FloatingActionButton defDelete = (FloatingActionButton) mLayout.findViewById(R.id.advQuitButton);
         //Buttons to help define where to point the flap
         final FloatingActionButton up = (FloatingActionButton) mLayout.findViewById(R.id.upArrowButton);
         final FloatingActionButton left = (FloatingActionButton) mLayout.findViewById(R.id.leftArrowButton);
@@ -92,7 +101,8 @@ public class AdvancementBaseFragment extends Fragment {
                 parentLayout.findViewById(R.id.acceptButton).setVisibility(View.VISIBLE);
                 parentLayout.findViewById(R.id.quitButton).setVisibility(View.VISIBLE);
                 parentLayout.findViewById(R.id.forwardButton).setVisibility(View.VISIBLE);
-                titles[0].setText(String.format("%s: 45.0", names[(curr_flap.isActivated() ? 1 : 0)]));
+                titles[0].setText("45.0");
+                param_pics[0].setImageResource(R.drawable.burrow_angle_icon);
                 up.setVisibility(View.GONE);
                 left.setVisibility(View.GONE);
                 right.setVisibility(View.GONE);
@@ -111,7 +121,8 @@ public class AdvancementBaseFragment extends Fragment {
                 parentLayout.findViewById(R.id.acceptButton).setVisibility(View.VISIBLE);
                 parentLayout.findViewById(R.id.quitButton).setVisibility(View.VISIBLE);
                 parentLayout.findViewById(R.id.forwardButton).setVisibility(View.VISIBLE);
-                titles[0].setText(String.format("%s: 45.0", names[(curr_flap.isActivated() ? 1 : 0)]));
+                titles[0].setText("45.0");
+                param_pics[0].setImageResource(R.drawable.burrow_angle_icon);
                 up.setVisibility(View.GONE);
                 left.setVisibility(View.GONE);
                 right.setVisibility(View.GONE);
@@ -129,11 +140,14 @@ public class AdvancementBaseFragment extends Fragment {
                 parentLayout.findViewById(R.id.acceptButton).setVisibility(View.VISIBLE);
                 parentLayout.findViewById(R.id.quitButton).setVisibility(View.VISIBLE);
                 parentLayout.findViewById(R.id.forwardButton).setVisibility(View.VISIBLE);
-                titles[0].setText(String.format("%s: 45.0", names[(curr_flap.isActivated() ? 1 : 0)]));
+                titles[0].setText("45.0");
+                param_pics[0].setImageResource(R.drawable.burrow_angle_icon);
                 up.setVisibility(View.GONE);
                 left.setVisibility(View.GONE);
                 right.setVisibility(View.GONE);
                 down.setVisibility(View.GONE);
+                defAccept.setVisibility(View.GONE);
+                defDelete.setVisibility(View.GONE);
             }
 
         });
@@ -147,7 +161,8 @@ public class AdvancementBaseFragment extends Fragment {
                 parentLayout.findViewById(R.id.acceptButton).setVisibility(View.VISIBLE);
                 parentLayout.findViewById(R.id.quitButton).setVisibility(View.VISIBLE);
                 parentLayout.findViewById(R.id.forwardButton).setVisibility(View.VISIBLE);
-                titles[0].setText(String.format("%s: 45.0", names[(curr_flap.isActivated() ? 1 : 0)]));
+                titles[0].setText("45.0");
+                param_pics[0].setImageResource(R.drawable.burrow_angle_icon);
                 up.setVisibility(View.GONE);
                 left.setVisibility(View.GONE);
                 right.setVisibility(View.GONE);
@@ -224,7 +239,7 @@ public class AdvancementBaseFragment extends Fragment {
                     curr_flap.setBurrowAngle(display_value);
                 }
                 curr_flap.invalidate();//Force a redraw
-                specific_text.setText(String.format("%s : %.2f",name, display_value));
+                specific_text.setText(String.format("%.2f",display_value));
             }
 
             @Override

@@ -37,6 +37,7 @@ public class AdvancementFlap extends View implements Flap, RotationGestureDetect
     private boolean flap_activated = false;//Variable to indicate whether the full advancement flap needs to be shwon
     private boolean activated = true; //Begins as true
     private boolean scale_activated = false;
+    private boolean motion_activated = true;
     private RotationGestureDetector mRotationDetector;
     private double rot = 0.0; //Store the current global rotation
     private GestureDetectorCompat mDetector;
@@ -64,6 +65,7 @@ public class AdvancementFlap extends View implements Flap, RotationGestureDetect
         this.mRotationDetector = new RotationGestureDetector(this);
         this.mScaleDetector = new ScaleGestureDetector(context, new ScaleListener());
 
+
         paint1 = new Paint();
         paint2 = new Paint();
 
@@ -80,6 +82,36 @@ public class AdvancementFlap extends View implements Flap, RotationGestureDetect
         path3 = new Path();
         path4 = new Path();
     }
+    public AdvancementFlap(Context context, boolean flap_activated) {
+        super(context);
+        w = 100;
+        h = 100;
+        this.center = new Point(500,500);
+        this.defect_ratio = 1; //Initially square
+        this.flap_ratio = 3; //Initially 3:1
+        mDetector = new GestureDetectorCompat(context,new MoveListener(this));
+        this.mRotationDetector = new RotationGestureDetector(this);
+        this.mScaleDetector = new ScaleGestureDetector(context, new ScaleListener());
+
+
+        paint1 = new Paint();
+        paint2 = new Paint();
+
+        //Set the paints
+        paint1.setStyle(Paint.Style.STROKE);
+        paint1.setStrokeWidth(4);
+        paint1.setColor(android.graphics.Color.BLACK);
+        paint2.setStyle(Paint.Style.FILL);
+        paint2.setColor(getResources().getColor(R.color.black));
+        paint2.setAlpha(65);
+
+        path1 = new Path();
+        path2 = new Path();
+        path3 = new Path();
+        path4 = new Path();
+        this.flap_activated = flap_activated;
+    }
+
 
     public int getW() { return this.w; }
     public int getH() { return this.h; }
@@ -96,6 +128,7 @@ public class AdvancementFlap extends View implements Flap, RotationGestureDetect
     }
     public void setFlapRatio(double r) {this.flap_ratio = r;}
     public void setBurrowAngle(double a) {this.burrow_angle = a;}
+    public double getBurrowAngle() {return this.burrow_angle;}
     public void setFlapActivated(boolean f) {
         this.flap_activated = f;
         this.mScaleFactor = 1.0f;
@@ -103,6 +136,9 @@ public class AdvancementFlap extends View implements Flap, RotationGestureDetect
     public boolean isFlapActivated() {return this.flap_activated;}
     public void setScaleActivated(boolean b) { this.scale_activated = b;}
     public boolean isScaleActivated() {return this.scale_activated;}
+
+    public void setMotionActivated(boolean b) {this.motion_activated = b;}
+    public boolean isMotionActivated() {return this.motion_activated;}
 
     public void setActivated(boolean b) {
         this.activated = b;
@@ -327,27 +363,29 @@ public class AdvancementFlap extends View implements Flap, RotationGestureDetect
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
         // Let the ScaleGestureDetector inspect all events.
-        if (scale_activated) {
-            mRotationDetector.onTouchEvent(ev);
-            mScaleDetector.onTouchEvent(ev);
-        } else {
-            mDetector.onTouchEvent(ev);
-            //Only want to do drag if no other events occur
-            if ((ev.getEventTime() - ev.getDownTime() > 75)) {
-                activated = false;
-                invalidate();
-                //Redraw the flap
+        if (motion_activated) {
+            if (scale_activated) {
+                mRotationDetector.onTouchEvent(ev);
+                mScaleDetector.onTouchEvent(ev);
+            } else {
+                mDetector.onTouchEvent(ev);
+                //Only want to do drag if no other events occur
+                if ((ev.getEventTime() - ev.getDownTime() > 75)) {
+                    activated = false;
+                    invalidate();
+                    //Redraw the flap
 
-                setTouchpoint(ev.getRawX(), ev.getRawY());
-                ClipData clipData = ClipData.newPlainText("", "");
+                    setTouchpoint(ev.getRawX(), ev.getRawY());
+                    ClipData clipData = ClipData.newPlainText("", "");
 
-                //Use Bitmap to create Shadow
-                setDrawingCacheEnabled(true);
-                Bitmap viewCapture = getDrawingCache();
-                FlapDragShadowBuilder shadowBuilder = new FlapDragShadowBuilder(viewCapture);
-                shadowBuilder.setDisplacement(getDisplacement()[0], getDisplacement()[1]);
-                startDrag(clipData, shadowBuilder, this, 0);
-                setVisibility(View.INVISIBLE);
+                    //Use Bitmap to create Shadow
+                    setDrawingCacheEnabled(true);
+                    Bitmap viewCapture = getDrawingCache();
+                    FlapDragShadowBuilder shadowBuilder = new FlapDragShadowBuilder(viewCapture);
+                    shadowBuilder.setDisplacement(getDisplacement()[0], getDisplacement()[1]);
+                    startDrag(clipData, shadowBuilder, this, 0);
+                    setVisibility(View.INVISIBLE);
+                }
             }
         }
         return true;

@@ -13,9 +13,8 @@ public interface Flap {
     //Touchpoint stuff needed for dragging
     void setTouchpoint(float x, float y);
 
-    //View Methods that are needed
-    int getWidth();//Call superclass View method
-    int getHeight(); //Call superclass View method
+    int getWidth();
+    int getHeight();
 
 
     float[] getTouchpoint();
@@ -25,6 +24,9 @@ public interface Flap {
     void setActivated(boolean b);
     void setScaleActivated(boolean b);
     boolean isScaleActivated();
+    void setMotionActivated(boolean b);
+    boolean isMotionActivated();
+
 
     //Points for onDraw method, which all Views have
     ArrayList<Point> calculatePoints();

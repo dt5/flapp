@@ -10,24 +10,23 @@
     tools:context="com.alduran.doranwalsten.flapp.MainActivity">
 
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentRight="true">
+    <ImageView
+        android:layout_width="500dp"
+        android:layout_height="wrap_content"
+        android:src = "@drawable/flapp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:id = "@+id/logo"/>
 
-        <Button
-            android:layout_width="150dp"
-            android:layout_height="50dp"
-            android:id ="@+id/design_button"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
-            android:text = "DESIGN"
-            android:textSize = "15dp"
-            android:background="@color/colorPrimary"
-            android:onClick="designButtonPressed">
-
-        </Button>
-
-    </RelativeLayout>
+    <Button
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:text="DESIGN"
+        android:textColor="@color/white"
+        android:layout_centerHorizontal="true"
+        android:layout_alignBottom="@id/logo"
+        android:layout_marginBottom="75dp"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:onClick="designButtonPressed"/>
 
 </RelativeLayout>

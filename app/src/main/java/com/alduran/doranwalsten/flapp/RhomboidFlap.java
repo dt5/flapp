@@ -39,8 +39,11 @@ public class RhomboidFlap extends View implements Flap, RotationGestureDetector.
     private int up = 1; //Switch between +1 for up, -1 for down
     private RotationGestureDetector mRotationDetector;
     private double rot = 0.0; //Store the current global rotation
-    boolean scale_activated = false;
-    boolean activated = true;
+
+    //Booleans to control activity
+    private boolean scale_activated = false;
+    private boolean activated = true;
+    private boolean motion_activiated = true;
 
     //Want us to preallocate the colors and paths
     private Paint paint1;
@@ -89,6 +92,8 @@ public class RhomboidFlap extends View implements Flap, RotationGestureDetector.
     public void setActivated(boolean b) {
         this.activated = b;
     }
+    public boolean isMotionActivated() { return this.motion_activiated;}
+    public void setMotionActivated(boolean b) {this.motion_activiated = b;}
     public void switchUp() {this.up *= -1 ;}
 
     public void setTouchpoint(float x, float y) {
@@ -161,28 +166,29 @@ public class RhomboidFlap extends View implements Flap, RotationGestureDetector.
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
+        if (motion_activiated) {
+            if (scale_activated) {
+                mScaleDetector.onTouchEvent(ev);
+                mRotationDetector.onTouchEvent(ev);
+            } else {
+                mDetector.onTouchEvent(ev);
+                //Only want to do drag if no other events occur
+                if ((ev.getEventTime() - ev.getDownTime() > 75)) {
+                    activated = false;
+                    invalidate();
+                    //Redraw the flap
 
-        if (scale_activated) {
-            mScaleDetector.onTouchEvent(ev);
-            mRotationDetector.onTouchEvent(ev);
-        } else {
-            mDetector.onTouchEvent(ev);
-            //Only want to do drag if no other events occur
-            if ((ev.getEventTime() - ev.getDownTime() > 75)) {
-                activated = false;
-                invalidate();
-                //Redraw the flap
+                    setTouchpoint(ev.getRawX(), ev.getRawY());
+                    ClipData clipData = ClipData.newPlainText("", "");
 
-                setTouchpoint(ev.getRawX(), ev.getRawY());
-                ClipData clipData = ClipData.newPlainText("", "");
-
-                //Use Bitmap to create Shadow
-                setDrawingCacheEnabled(true);
-                Bitmap viewCapture = getDrawingCache();
-                FlapDragShadowBuilder shadowBuilder = new FlapDragShadowBuilder(viewCapture);
-                shadowBuilder.setDisplacement(getDisplacement()[0], getDisplacement()[1]);
-                startDrag(clipData, shadowBuilder, this, 0);
-                setVisibility(View.INVISIBLE);
+                    //Use Bitmap to create Shadow
+                    setDrawingCacheEnabled(true);
+                    Bitmap viewCapture = getDrawingCache();
+                    FlapDragShadowBuilder shadowBuilder = new FlapDragShadowBuilder(viewCapture);
+                    shadowBuilder.setDisplacement(getDisplacement()[0], getDisplacement()[1]);
+                    startDrag(clipData, shadowBuilder, this, 0);
+                    setVisibility(View.INVISIBLE);
+                }
             }
         }
 
