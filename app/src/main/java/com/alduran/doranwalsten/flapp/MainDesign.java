@@ -14,10 +14,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
+import layout.AdvancementBaseFragment;
 import layout.PlainBaseFragment;
 import layout.RhomboidBaseFragment;
 
@@ -30,11 +32,11 @@ public class MainDesign extends AppCompatActivity {
     private boolean open;//Whether the drag and drop menu is currently open
     private boolean adding; //Whether we are now adding a flap design
     ObjectPickingFragment curr_face; //This is our Rajawali object that we want to mess with
+    Flap curr_flap;//Have access to the current flap fragment in use
 
     Integer[] imageId = {
             R.drawable.rhomboid_logo,
             R.drawable.advancement_logo,
-            R.drawable.linear_logo
     };
 
     @Override
@@ -45,6 +47,11 @@ public class MainDesign extends AppCompatActivity {
         //Setup the Rajawali Surface Fragment
         final FragmentManager manager = getSupportFragmentManager();
         curr_face = (ObjectPickingFragment) manager.findFragmentById(R.id.face);
+        //Setup the Plain Base Fragment
+        Fragment baseFrag = new PlainBaseFragment();
+        FragmentTransaction ft = manager.beginTransaction();
+        ft.replace(R.id.fragmentContainer, baseFrag);
+        ft.commit();
 
         //Setup the FloatingActionButton to handle turning on and off the rotation action of the
         //Object Picking Fragment
@@ -53,22 +60,36 @@ public class MainDesign extends AppCompatActivity {
             public void onClick(View v) {
                 curr_face.switchCameraMode();
                 if (curr_face.myCamera.getMode()) {
-                    myFab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimaryDark)));
+                    myFab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.white)));
+                    myFab.setImageResource(R.drawable.ic_noportrait_purple_24dp);
                 } else {
                     myFab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
+                    myFab.setImageResource(R.drawable.ic_portrait_white_24dp);
                 }
             }
         });
         final FloatingActionButton forward = (FloatingActionButton) findViewById(R.id.forwardButton);
         final FloatingActionButton accept = (FloatingActionButton) findViewById(R.id.acceptButton);
+        final FloatingActionButton edit = (FloatingActionButton) findViewById(R.id.editFlapButton);
         final FloatingActionButton cancel = (FloatingActionButton) findViewById(R.id.quitButton);
+        final FloatingActionButton rotate = (FloatingActionButton) findViewById(R.id.rotateButton);
+        final Button ddb = (Button) findViewById(R.id.drag_drop);
 
         forward.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent next = new Intent(MainDesign.this,MainFeedbackActivity.class);
                 forward.setVisibility(View.GONE);
                 accept.setVisibility(View.GONE);
+                edit.setVisibility(View.GONE);
                 cancel.setVisibility(View.GONE);
+                ImageView feedback = (ImageView) findViewById(R.id.face_view);
+                if (curr_flap instanceof RhomboidFlap) {
+                    next.putExtra("image_res",R.drawable.rhomboid_feedback_bad);
+                    next.putExtra("flap_type",0);//True is rhomboid
+                } else if (curr_flap instanceof AdvancementFlap) {
+                    next.putExtra("image_res",R.drawable.adv_feedback_bad);
+                    next.putExtra("flap_type",1);
+                }
                 startActivity(next);
             }
 
@@ -77,30 +98,77 @@ public class MainDesign extends AppCompatActivity {
 
         accept.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                forward.setVisibility(View.GONE);
+                //forward.setVisibility(View.GONE);
                 accept.setVisibility(View.GONE);
-                cancel.setVisibility(View.GONE);
+                edit.setVisibility(View.VISIBLE);
+                //cancel.setVisibility(View.GONE);
+
+                ((View) curr_flap).invalidate();
 
                 Fragment fragment = new PlainBaseFragment();
                 FragmentTransaction ft = manager.beginTransaction();
-                ft.replace(R.id.plainBase,fragment);
+                ft.replace(R.id.fragmentContainer, fragment);
                 ft.commit();
             }
         });
 
+        edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (curr_flap instanceof RhomboidFlap) {
+                    RhomboidBaseFragment fragment = new RhomboidBaseFragment();
+                    FragmentTransaction ft = manager.beginTransaction();
+                    ft.replace(R.id.fragmentContainer, fragment);
+                    ft.commit();
+                } else if (curr_flap instanceof AdvancementFlap) {
+                    AdvancementBaseFragment fragment = new AdvancementBaseFragment();
+                    FragmentTransaction ft = manager.beginTransaction();
+                    ft.replace(R.id.fragmentContainer, fragment);
+                    ft.commit();
+                }
+
+                edit.setVisibility(View.GONE);
+                accept.setVisibility(View.VISIBLE);
+            }
+        });
 
         cancel.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 forward.setVisibility(View.GONE);
                 accept.setVisibility(View.GONE);
+                edit.setVisibility(View.GONE);
                 cancel.setVisibility(View.GONE);
+                rotate.setVisibility(View.GONE);
                 Fragment fragment = new PlainBaseFragment();
                 FragmentTransaction ft = manager.beginTransaction();
-                ft.replace(R.id.plainBase,fragment);
+                ft.replace(R.id.fragmentContainer, fragment);
                 ft.commit();
 
                 //In addition, need to remove the current design
-                deleteRhomoboid();
+                deleteFlap(curr_flap);
+                ddb.setEnabled(true);//Allowed to use that button again
+                //Allow the face to be moved again
+
+                if (!curr_face.myCamera.getMode()) {
+                    curr_face.switchCameraMode();
+                    myFab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.white)));
+                    myFab.setImageResource(R.drawable.ic_noportrait_purple_24dp);
+                }
+
+            }
+        });
+
+        rotate.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (curr_flap.isScaleActivated()) {
+                    curr_flap.setScaleActivated(false);
+                    rotate.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
+                    rotate.setImageResource(R.drawable.ic_rotate_90_degrees_ccw_white_24dp);
+                } else {
+                    curr_flap.setScaleActivated(true);
+                    rotate.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.white)));
+                    rotate.setImageResource(R.drawable.ic_rotate_90_degrees_ccw_purple_24dp);
+                }
             }
         });
         //Setup the usual selection stuff (Table View)
@@ -118,48 +186,68 @@ public class MainDesign extends AppCompatActivity {
                 adding = true;
                 open = false;
 
-                //NOW! Need to initialize the specific fragment and flap for design
-                RhomboidFlap new_flap = new RhomboidFlap(getBaseContext());
+                //Shut down the face
 
+                if (curr_face.myCamera.getMode()) { //Need to turn it off
+                    curr_face.switchCameraMode();
+                    myFab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
+                    myFab.setImageResource(R.drawable.ic_portrait_white_24dp);
+                }
                 RelativeLayout myLayout = (RelativeLayout) findViewById(R.id.designLayout);
                 RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT );
                 params.addRule(RelativeLayout.CENTER_HORIZONTAL,RelativeLayout.TRUE);
                 params.addRule(RelativeLayout.CENTER_VERTICAL,RelativeLayout.TRUE);
-                new_flap.setLayoutParams(params);
-                new_flap.getLayoutParams().height = 600;
-                new_flap.getLayoutParams().width = 600;
-                myLayout.addView(new_flap);
+                //NOW! Need to initialize the specific fragment and flap for design
+                Flap new_flap;
+                Fragment fragment;
+                //Determine which Flap needs to be added
+                if (position == 0) { //Rhomboid Flap
+                    new_flap = new RhomboidFlap(getBaseContext());
+                    //Need to initiate the new Fragment
+                    fragment = new RhomboidBaseFragment();
+                    forward.setVisibility(View.VISIBLE);
+                    accept.setVisibility(View.VISIBLE);
+                    cancel.setVisibility(View.VISIBLE);
+                    rotate.setVisibility(View.VISIBLE);
+                } else if (position == 1) { //Advancement Flap
+                    new_flap = new AdvancementFlap(getBaseContext());
+                    //Need to initiate the new Fragment
+                    fragment = new AdvancementBaseFragment();
+                    rotate.setVisibility(View.VISIBLE);
+                    //Only want accept and cancel visible initially
+                } else {
+                    new_flap = null;
+                    fragment = null;
+                }
+                curr_flap = new_flap;
+                    //Need to make a new Flap interface so that way we can save space!!!!
+                View new_view = (View) new_flap;
+                new_view.setLayoutParams(params);
+                //Apparently need a really large region
+                new_view.getLayoutParams().height = 1000;
+                new_view.getLayoutParams().width = 1000;
+                myLayout.addView(new_view);
+                //Trying to do this here so above the flap
+                FragmentTransaction ft = manager.beginTransaction();
+                ft.replace(R.id.fragmentContainer, fragment);
+                ft.commit();
+                findViewById(R.id.fragmentContainer).bringToFront(); //WOO! This worked!
                 drag_options.setVisibility(View.GONE);
 
-                //Need to initiate the new Fragment
-                Fragment fragment = new RhomboidBaseFragment();
-                FragmentTransaction ft = manager.beginTransaction();
-                ft.replace(R.id.plainBase,fragment);
-                ft.commit();
+
 
                 //Need to make the design button options visible
-                FloatingActionButton forward = (FloatingActionButton) findViewById(R.id.forwardButton);
-                forward.setVisibility(View.VISIBLE);
-                FloatingActionButton accept = (FloatingActionButton) findViewById(R.id.acceptButton);
-                accept.setVisibility(View.VISIBLE);
-                FloatingActionButton cancel = (FloatingActionButton) findViewById(R.id.quitButton);
-                cancel.setVisibility(View.VISIBLE);
 
-
+                Button ddb = (Button) findViewById(R.id.drag_drop);
+                ddb.setEnabled(false);//Need to disable the button to prevent other flaps from being added
             }
         });
     }
 
     //Will need to modify such that we can pass a specific flap on the screent to this method
-    private void deleteRhomoboid() {
+    public void deleteFlap(Flap flap) {
         RelativeLayout parentLayout = (RelativeLayout) findViewById(R.id.designLayout);
-        int count = parentLayout.getChildCount(); //Number of children
-        for (int i = 0; i < count; i++) {
-            View v = parentLayout.getChildAt(i);
-            if (v instanceof RhomboidFlap) {
-                parentLayout.removeView(v);
-            }
-        }
+        parentLayout.removeView((View) flap);
     }
     private class FlappList extends ArrayAdapter<Integer> {
 

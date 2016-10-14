@@ -4,80 +4,76 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-
-    <RelativeLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="500dp"
-        android:id="@+id/relativeLayout">
-
-        <ImageView
+        android:layout_height="match_parent">
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="500dp"
-            android:id="@+id/face_view"
-            android:src = "@drawable/feedback_2_1_right"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="600dp"
+                android:id="@+id/relativeLayout">
 
-        <android.support.design.widget.FloatingActionButton
-            android:id = "@+id/acceptButton_F"
-            android:src="@drawable/ic_done_white_24dp"
-            app:backgroundTint = "@color/colorPrimary"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:clickable="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="600dp"
+                    android:id="@+id/face_view"
+                    android:src = "@drawable/adv_feedback_bad"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentStart="true" />
 
-        <android.support.design.widget.FloatingActionButton
-            android:id = "@+id/editButton"
-            android:src="@drawable/ic_create_white_24dp"
-            app:backgroundTint = "@color/colorPrimary"
-            android:layout_above = "@id/acceptButton_F"
-            android:layout_alignParentRight="true"
-            android:clickable="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
 
-        <android.support.design.widget.FloatingActionButton
-            android:id = "@+id/cancelButton_F"
-            android:src="@drawable/ic_clear_white_24dp"
-            app:backgroundTint = "@color/colorPrimaryDark"
-            android:layout_above = "@id/editButton"
-            android:layout_alignParentRight="true"
-            android:clickable="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-    </RelativeLayout>
+                <android.support.design.widget.FloatingActionButton
+                    android:id = "@+id/cancelButton_F"
+                    android:src="@drawable/ic_clear_white_24dp"
+                    app:backgroundTint = "@color/colorPrimaryDark"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:clickable="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
 
-    <pl.droidsonroids.gif.GifImageView
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_alignParentBottom="true"
-        android:src="@drawable/adv_45_right_21_stress"
-        android:id="@+id/flap_gif" />
+                <android.support.design.widget.FloatingActionButton
+                    android:id = "@+id/editButton"
+                    android:src="@drawable/ic_create_white_24dp"
+                    app:backgroundTint = "@color/colorPrimary"
+                    android:layout_above = "@id/cancelButton_F"
+                    android:layout_alignParentRight="true"
+                    android:clickable="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Stress"
-        android:textColor = "@color/white"
-        android:background="@color/colorPrimary"
-        android:id="@+id/stressButton"
-        android:enabled="false"
-        android:onClick = "stressPressed"
-        android:layout_above="@+id/flap_gif"
-        android:layout_alignParentStart="true" />
+                <android.support.design.widget.FloatingActionButton
+                    android:id = "@+id/cameraButton_F"
+                    android:src="@drawable/ic_camera_front_white_24dp"
+                    app:backgroundTint = "@color/colorPrimary"
+                    android:layout_above = "@id/editButton"
+                    android:layout_alignParentRight="true"
+                    android:clickable="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Strain"
-        android:id="@+id/strainButton"
-        android:background="@color/gray"
-        android:enabled = "true"
-        android:onClick="strainPressed"
-        android:layout_alignTop="@+id/stressButton"
-        android:layout_toEndOf="@+id/stressButton" />
+
+            </RelativeLayout>
+
+            <pl.droidsonroids.gif.GifImageView
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_alignParentBottom="true"
+                android:src="@drawable/adv_45_right_21_strain"
+                android:id="@+id/strain_gif" />
+
+            <pl.droidsonroids.gif.GifImageView
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_alignParentBottom="true"
+                android:src="@drawable/adv_45_right_21_stress"
+                android:id="@+id/stress_gif" />
+        </LinearLayout>
+
+    </ScrollView>
 
 
 </RelativeLayout>

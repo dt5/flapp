@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -62,16 +63,16 @@ public class RhomboidBaseFragment extends Fragment {
         parameters[1] = (SeekBar) mLayout.findViewById(R.id.seekBar_2); //ALPHA
         parameters[2] = (SeekBar) mLayout.findViewById(R.id.seekBar_3); //BETA
 
-        names[0] = "Ratio";
-        names[1] = "Alpha";
-        names[2] = "Beta";
+        //names[0] = "Ratio";
+        //names[1] = "Alpha";
+        //names[2] = "Beta";
 
         titles[0] = (TextView) mLayout.findViewById(R.id.textView1);
-        titles[0].setText(String.format("%s: 1.73",names[0]));
+        titles[0].setText("1.73");
         titles[1] = (TextView) mLayout.findViewById(R.id.textView2);
-        titles[1].setText(String.format("%s: 0.0",names[1]));
+        titles[1].setText("0.0");
         titles[2] = (TextView) mLayout.findViewById(R.id.textView3);
-        titles[2].setText(String.format("%s: 60.0", names[2]));
+        titles[2].setText("60.0");
 
         double[] ratio_bound = {1.0,2.0};
         bounds.add(ratio_bound);
@@ -79,6 +80,48 @@ public class RhomboidBaseFragment extends Fragment {
         bounds.add(alpha_bound);
         double[] beta_bound = {0.0,90.0};
         bounds.add(beta_bound);
+
+        //Add the buttons which allow the user to flip the pedicle up vs. down
+        final Button upButton = (Button) mLayout.findViewById(R.id.upButton);
+        final Button downButton = (Button) mLayout.findViewById(R.id.downButton);
+
+        upButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                upButton.setEnabled(false); //
+                upButton.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                upButton.setTextColor(getResources().getColor(R.color.white));
+
+                downButton.setEnabled(true);
+                downButton.setBackgroundColor(getResources().getColor(R.color.gray));
+                downButton.setTextColor(getResources().getColor(R.color.black));
+
+                //
+                //Need to switch the way the beta angle is defined
+                curr_flap.switchUp();
+                curr_flap.invalidate();
+
+            }
+        });
+
+        downButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                downButton.setEnabled(false); //
+                downButton.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                downButton.setTextColor(getResources().getColor(R.color.white));
+
+                upButton.setEnabled(true);
+                upButton.setBackgroundColor(getResources().getColor(R.color.gray));
+                upButton.setTextColor(getResources().getColor(R.color.black));
+
+                //
+                //Need to switch the way the beta angle is defined
+                curr_flap.switchUp();
+                curr_flap.invalidate();
+
+            }
+        });
 
         RelativeLayout parentLayout = (RelativeLayout) getActivity().findViewById(R.id.designLayout);
         int count = parentLayout.getChildCount(); //Number of children
@@ -113,7 +156,7 @@ public class RhomboidBaseFragment extends Fragment {
                             break;
                     }
                     curr_flap.invalidate();
-                    specific_text.setText(String.format("%s : %.2f",name, display_value));
+                    specific_text.setText(String.format("%.2f",display_value));
                 }
 
                 @Override

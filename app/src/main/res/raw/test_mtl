@@ -32,7 +32,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd face_skin_hi.jpg
+map_Kd face_skin_hi_copy.jpg
 
 newmtl Texture3
 Ns 19.607843
